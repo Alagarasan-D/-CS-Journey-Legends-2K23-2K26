@@ -1,444 +1,990 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Memory Book</title>
-<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --page-width: min(45vw, 400px);
-    --page-height: min(65vh, 560px);
-    --bg-color: #020617;
-  }
-
-  @media (max-width: 600px) {
-    :root {
-      --page-width: 45vw;
-      --page-height: 55vh;
-    }
-  }
-
-  body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
-    font-family: 'Kalam', cursive;
-    overflow: hidden;
-  }
-
-  .scene {
-    width: calc(var(--page-width) * 2);
-    height: var(--page-height);
-    perspective: 1800px;
-    transform-style: preserve-3d;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .book {
-    position: relative;
-    width: var(--page-width);
-    height: var(--page-height);
-    transform-style: preserve-3d;
-    transform: rotateX(15deg) rotateY(0deg); 
-    transition: transform 0.5s ease;
-  }
-
-  .scene:hover .book {
-    transform: rotateX(10deg) rotateY(-5deg);
-  }
-
-  .page {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transform-origin: left center;
-    transform-style: preserve-3d;
-    transition: transform 1.5s cubic-bezier(0.645, 0.045, 0.355, 1);
-    background: #fff;
-    border-radius: 2px 8px 8px 2px;
-    box-shadow: 
-      inset 0 0 15px rgba(0,0,0,0.1), 
-      inset -10px 0 20px rgba(0,0,0,0.05), 
-      1px 1px 5px rgba(0,0,0,0.2); 
-  }
-
-  .front, .back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    overflow: hidden;
-    border-radius: 2px 8px 8px 2px;
-    background-color: #fff;
-  }
-
-  /* Internal Shadows to simulate bend / spine */
-  .front::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 35px;
-    height: 100%;
-    background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%);
-    pointer-events: none;
-    z-index: 10;
-  }
-
-  .back::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0; /* right edge matches spine relative to flipped state */
-    width: 35px;
-    height: 100%;
-    background: linear-gradient(to left, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%);
-    pointer-events: none;
-    z-index: 10;
-  }
-
-  .front { z-index: 2; }
-  
-  .back {
-    transform: rotateY(180deg);
-  }
-
-  /* Seamless Spread System (One Image Across 2 Pages) */
-  .img-spread {
-    background-size: calc(var(--page-width) * 2) var(--page-height);
-    background-repeat: no-repeat;
-    background-color: #111;
-  }
-  .img-left {
-    background-position: left center;
-  }
-  .img-right {
-    background-position: right center;
-  }
-
-  /* Z-index layering for 11 pages */
-  #page1 { z-index: 11; }
-  #page2 { z-index: 10; }
-  #page3 { z-index: 9; }
-  #page4 { z-index: 8; }
-  #page5 { z-index: 7; }
-  #page6 { z-index: 6; }
-  #page7 { z-index: 5; }
-  #page8 { z-index: 4; }
-  #page9 { z-index: 3; }
-  #page10 { z-index: 2; }
-  #page11 { z-index: 1; }
-
-  /* Flipping classes */
-  .flipped {
-    transform: rotateY(-180deg);
-  }
-
-  /* Cover & Blank Styles */
-  .cover, .blank {
-    background: #0f172a;
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Cover Special Particles Effect */
-  .cover::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image: 
-      radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
-      radial-gradient(1px 1px at 60px 80px, #fff, rgba(0,0,0,0)),
-      radial-gradient(2px 2px at 120px 140px, #fff, rgba(0,0,0,0)),
-      radial-gradient(1px 1px at 180px 200px, #fff, rgba(0,0,0,0));
-    background-repeat: repeat;
-    background-size: 200px 200px;
-    animation: starsMove 20s linear infinite;
-    opacity: 0.6;
-    pointer-events: none;
-  }
-
-  @keyframes starsMove {
-    from { background-position: 0 0; }
-    to { background-position: -200px -200px; }
-  }
-
-  /* Intro text effects */
-  .intro-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    color: #e2e8f0;
-    text-align: center;
-    padding: 10%;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-    z-index: 2;
-    position: relative;
-  }
-
-  .line {
-    margin: 15px 0;
-    opacity: 0;
-    animation: slideUpFade 1s both;
-  }
-  .line1 { animation-delay: 0.5s; }
-  .line2 { animation-delay: 2s; }
-  .line3 { animation-delay: 4.5s; }
-
-  @keyframes slideUpFade {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .line1 span {
-    font-size: 2.8rem;
-    font-weight: 900;
-    color: #0ff;
-    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
-    display: inline-block;
-    animation: floatBounce 4s infinite ease-in-out;
-  }
-
-  .line2 span {
-    font-size: 1.5rem;
-    color: #fff;
-    letter-spacing: 4px;
-    display: inline-block;
-    border-right: 2px solid #fff;
-    white-space: nowrap;
-    overflow: hidden;
-    max-width: 0;
-    animation: typing 1.5s steps(12, end) forwards 2.5s, blinkCursor 0.7s infinite;
-  }
-
-  .line3 span {
-    font-size: 2.5rem;
-    font-family: 'Kalam', cursive;
-    color: #fde047;
-    text-shadow: 0 0 15px #eab308;
-    display: inline-block;
-    animation: blinkGlow 2s infinite ease-in-out;
-  }
-
-  @keyframes floatBounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
-  }
-
-  @keyframes typing {
-    from { max-width: 0; }
-    to { max-width: 100%; }
-  }
-
-  @keyframes blinkCursor {
-    from, to { border-color: transparent }
-    50% { border-color: #fff; }
-  }
-
-  @keyframes blinkGlow {
-    0%, 100% { opacity: 1; text-shadow: 0 0 10px #eab308; }
-    50% { opacity: 0.7; text-shadow: none; }
-  }
-
-  /* Loading screen styles */
-  .loading-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    background: #0f172a;
-    color: #10b981;
-    font-family: 'Courier New', Courier, monospace;
-    padding: 20px;
-    box-sizing: border-box;
-    width: 100%;
-  }
-
-  .progress-bar {
-    width: 80%;
-    height: 12px;
-    background: #1e293b;
-    border-radius: 6px;
-    border: 1px solid #10b981;
-    margin: 20px 0;
-    box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
-    overflow: hidden;
-  }
-
-  .progress {
-    width: 10%;
-    height: 100%;
-    background: #10b981;
-    border-radius: 4px;
-    animation: pulseProgress 2s infinite alternate;
-  }
-
-  @keyframes pulseProgress {
-    0% { opacity: 0.7; box-shadow: 0 0 5px #10b981; }
-    100% { opacity: 1; box-shadow: 0 0 15px #10b981; }
-  }
-
-  .loading-text {
-    font-size: 1.6rem;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-
-  .waiting-text {
-    font-size: 1.2rem;
-    animation: blink 1.5s infinite;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Loading</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="scene">
+    <!-- Floating particles background -->
+    <div class="particles" id="particles"></div>
 
-<div class="scene">
-  <div class="book" id="book">
-    
-    <!-- Page 1 (Cover + Image 1 Left) -->
-    <div class="page" id="page1">
-      <div class="front cover">
-        <div class="intro-container">
-           <div class="line line1"><span>MMCAS</span></div>
-           <div class="line line2"><span>CS-2023-2026</span></div>
-           <div class="line line3"><span>signing out</span></div>
+    <!-- Neural grid lines -->
+    <canvas id="neural-canvas"></canvas>
+
+    <!-- Central 3D cube -->
+    <div class="cube-wrapper">
+      <div class="cube-glow"></div>
+      <div class="cube">
+        <div class="face front"></div>
+        <div class="face back"></div>
+        <div class="face left"></div>
+        <div class="face right"></div>
+        <div class="face top"></div>
+        <div class="face bottom"></div>
+      </div>
+    </div>
+
+    <!-- Orbiting rings -->
+    <div class="orbit-container">
+      <div class="orbit ring-1">
+        <div class="orbit-dot dot-1"></div>
+      </div>
+      <div class="orbit ring-2">
+        <div class="orbit-dot dot-2"></div>
+      </div>
+      <div class="orbit ring-3">
+        <div class="orbit-dot dot-3"></div>
+      </div>
+    </div>
+
+    <!-- Main loading card -->
+    <div class="loader-card">
+      <div class="card-inner">
+        <div class="ai-label">
+          <span class="ai-icon">◈</span>
+          <span class="ai-text">HEART BREAK</span>
+          <span class="ai-badge">COMPUTER SCIENCE</span>
+        </div>
+
+        <h1 class="main-title">MMCAS<br /><span class="gradient-text">CS-2023-2026</span></h1>
+
+        <!-- Status messages -->
+        <div class="status-area">
+          <div class="status-line" id="status-text">Booting neural core...</div>
+          <div class="status-dots">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+          <div class="progress-shine"></div>
+          <div class="progress-glow" id="progress-glow"></div>
+        </div>
+
+        <!-- Percentage display -->
+        <div class="percent-display">
+          <span class="percent-value" id="percent-value">0</span>
+          <span class="percent-sign">%</span>
+        </div>
+
+        <!-- Module checklist -->
+        <div class="modules" id="modules">
+          <div class="module" data-step="0">
+            <span class="mod-icon">○</span>
+            <span class="mod-label">Neural Core</span>
+            <span class="mod-bar"><span></span></span>
+          </div>
+          <div class="module" data-step="1">
+            <span class="mod-icon">○</span>
+            <span class="mod-label">Language Model</span>
+            <span class="mod-bar"><span></span></span>
+          </div>
+          <div class="module" data-step="2">
+            <span class="mod-icon">○</span>
+            <span class="mod-label">Vision Engine</span>
+            <span class="mod-bar"><span></span></span>
+          </div>
+          <div class="module" data-step="3">
+            <span class="mod-icon">○</span>
+            <span class="mod-label">Memory Mesh</span>
+            <span class="mod-bar"><span></span></span>
+          </div>
+          <div class="module" data-step="4">
+            <span class="mod-icon">○</span>
+            <span class="mod-label">Reasoning Layer</span>
+            <span class="mod-bar"><span></span></span>
+          </div>
+        </div>
+
+        <!-- Waveform -->
+        <div class="waveform">
+          <div class="wave-bar" style="--i:1"></div>
+          <div class="wave-bar" style="--i:2"></div>
+          <div class="wave-bar" style="--i:3"></div>
+          <div class="wave-bar" style="--i:4"></div>
+          <div class="wave-bar" style="--i:5"></div>
+          <div class="wave-bar" style="--i:6"></div>
+          <div class="wave-bar" style="--i:7"></div>
+          <div class="wave-bar" style="--i:8"></div>
+          <div class="wave-bar" style="--i:9"></div>
+          <div class="wave-bar" style="--i:10"></div>
+          <div class="wave-bar" style="--i:11"></div>
+          <div class="wave-bar" style="--i:12"></div>
+          <div class="wave-bar" style="--i:13"></div>
+          <div class="wave-bar" style="--i:14"></div>
+          <div class="wave-bar" style="--i:15"></div>
+          <div class="wave-bar" style="--i:16"></div>
+          <div class="wave-bar" style="--i:17"></div>
+          <div class="wave-bar" style="--i:18"></div>
+          <div class="wave-bar" style="--i:19"></div>
+          <div class="wave-bar" style="--i:20"></div>
         </div>
       </div>
-      <div class="back img-spread img-left" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1774158751/1st_pongal_mass_rmjy0g.jpg');"></div>
     </div>
 
-    <!-- Page 2 (Image 1 Right + Image 2 Left) -->
-    <div class="page" id="page2">
-      <div class="front img-spread img-right" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1774158751/1st_pongal_mass_rmjy0g.jpg');"></div>
-      <div class="back img-spread img-left" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1774158751/1st_pongal_2_dcmrmv.jpg');"></div>
+    <!-- Corner HUD elements -->
+    <div class="hud hud-tl">
+      <div class="hud-line"></div>
+      <div class="hud-line short"></div>
+    </div>
+    <div class="hud hud-tr">
+      <div class="hud-line"></div>
+      <div class="hud-line short"></div>
+    </div>
+    <div class="hud hud-bl">
+      <div class="hud-line"></div>
+      <div class="hud-line short"></div>
+    </div>
+    <div class="hud hud-br">
+      <div class="hud-line"></div>
+      <div class="hud-line short"></div>
     </div>
 
-    <!-- Page 3 (Image 2 Right + Image 3 Left) -->
-    <div class="page" id="page3">
-      <div class="front img-spread img-right" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1774158751/1st_pongal_2_dcmrmv.jpg');"></div>
-      <div class="back img-spread img-left" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1773304356/IMG_20260110_112102_bvebrv.jpg');"></div>
-    </div>
+    <!-- Scan line -->
+    <div class="scan-line"></div>
 
-    <!-- Page 4 (Image 3 Right + Image 4 Left) -->
-    <div class="page" id="page4">
-      <div class="front img-spread img-right" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1773304356/IMG_20260110_112102_bvebrv.jpg');"></div>
-      <div class="back img-spread img-left" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1773302273/IMG-20250111-WA0135_h561f6.jpg');"></div>
+    <!-- Complete overlay -->
+    <div class="complete-overlay" id="complete">
+      <div class="complete-icon">✦</div>
+      <div class="complete-text">PORTAL  READY</div>
+      <div class="complete-sub">ON PROCESS</div>
     </div>
-
-    <!-- Page 5 (Image 4 Right + Image 5 Left) -->
-    <div class="page" id="page5">
-      <div class="front img-spread img-right" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1773302273/IMG-20250111-WA0135_h561f6.jpg');"></div>
-      <div class="back img-spread img-left" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1773304273/IMG_20260110_105723_jqhrhd.jpg');"></div>
-    </div>
-
-    <!-- Page 6 (Image 5 Right + Image 6 Left) -->
-    <div class="page" id="page6">
-      <div class="front img-spread img-right" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1773304273/IMG_20260110_105723_jqhrhd.jpg');"></div>
-      <div class="back img-spread img-left" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1775372107/IMG_20251013_135030_fgofou.jpg');"></div>
-    </div>
-
-    <!-- Page 7 (Image 6 Right + Image 7 Left) -->
-    <div class="page" id="page7">
-      <div class="front img-spread img-right" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1775372107/IMG_20251013_135030_fgofou.jpg');"></div>
-      <div class="back img-spread img-left" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1773304657/IMG_20260110_113654_t4sca1.jpg');"></div>
-    </div>
-
-    <!-- Page 8 (Image 7 Right + Image 8 Left) -->
-    <div class="page" id="page8">
-      <div class="front img-spread img-right" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1773304657/IMG_20260110_113654_t4sca1.jpg');"></div>
-      <div class="back img-spread img-left" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1775372098/IMG-20260110-WA0070_nl7fwu.jpg');"></div>
-    </div>
-
-    <!-- Page 9 (Image 8 Right + Image 9 Left) -->
-    <div class="page" id="page9">
-      <div class="front img-spread img-right" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1775372098/IMG-20260110-WA0070_nl7fwu.jpg');"></div>
-      <div class="back img-spread img-left" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1775372095/IMG-20250711-WA0041_b3nlm9.jpg');"></div>
-    </div>
-
-    <!-- Page 10 (Image 9 Right + Blank Left End) -->
-    <div class="page" id="page10">
-      <div class="front img-spread img-right" style="background-image: url('https://res.cloudinary.com/deatzzrsw/image/upload/v1775372095/IMG-20250711-WA0041_b3nlm9.jpg');"></div>
-      <div class="back blank"></div>
-    </div>
-
-    <!-- Page 11 (Loading Screen Right + Back Cover) -->
-    <div class="page" id="page11">
-      <div class="front">
-        <div class="loading-wrapper">
-           <div class="loading-text">10% Complete</div>
-           <div class="progress-bar">
-              <div class="progress"></div>
-           </div>
-           <div class="waiting-text">and waiting...</div>
-        </div>
-      </div>
-      <div class="back cover"></div>
-    </div>
-
   </div>
-</div>
 
+  <script src="script.js"></script>
+</body>
+</html>
+<style>
+    /* ============================================================
+   AI LOADING SCREEN — style.css
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;600&display=swap');
+
+:root {
+  --primary: #6c63ff;
+  --accent: #00f5d4;
+  --accent2: #ff6b9d;
+  --glow: rgba(108, 99, 255, 0.6);
+  --glow2: rgba(0, 245, 212, 0.5);
+  --dark: #07060f;
+  --card-bg: rgba(14, 12, 28, 0.85);
+  --text: #e8e4ff;
+  --muted: rgba(200, 195, 255, 0.45);
+  --border: rgba(108, 99, 255, 0.25);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--dark);
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--text);
+}
+
+/* ── Scene ────────────────────────────────────────────────── */
+.scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(108,99,255,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(0,245,212,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 10% 80%, rgba(255,107,157,0.07) 0%, transparent 60%),
+    var(--dark);
+}
+
+/* ── Neural canvas ───────────────────────────────────────── */
+#neural-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* ── Floating particles ──────────────────────────────────── */
+.particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  animation: floatUp var(--dur, 8s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  opacity: 0;
+}
+@keyframes floatUp {
+  0%   { transform: translateY(0) scale(0.5); opacity: 0; }
+  15%  { opacity: var(--max-op, 0.7); }
+  80%  { opacity: var(--max-op, 0.7); }
+  100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+}
+
+/* ── 3D Cube ─────────────────────────────────────────────── */
+.cube-wrapper {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -70%);
+  transform-style: preserve-3d;
+  z-index: 0;
+}
+
+.cube-glow {
+  position: absolute;
+  inset: -30px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50%       { transform: scale(1.3); opacity: 1; }
+}
+
+.cube {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: spinCube 12s linear infinite;
+}
+@keyframes spinCube {
+  from { transform: rotateX(25deg) rotateY(0deg); }
+  to   { transform: rotateX(25deg) rotateY(360deg); }
+}
+
+.face {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border: 1.5px solid rgba(108, 99, 255, 0.5);
+  background: rgba(108, 99, 255, 0.04);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.face::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(0, 245, 212, 0.2);
+  border-radius: 4px;
+}
+
+.face.front  { transform: translateZ(60px); }
+.face.back   { transform: translateZ(-60px) rotateY(180deg); }
+.face.left   { transform: translateX(-60px) rotateY(-90deg); }
+.face.right  { transform: translateX(60px)  rotateY(90deg); }
+.face.top    { transform: translateY(-60px) rotateX(90deg); }
+.face.bottom { transform: translateY(60px)  rotateX(-90deg); }
+
+/* Corner highlights on each face */
+.face::before {
+  content: '';
+  position: absolute;
+  top: 8px; left: 8px;
+  width: 16px; height: 16px;
+  border-top: 2px solid var(--accent);
+  border-left: 2px solid var(--accent);
+  opacity: 0.8;
+}
+
+/* ── Orbiting rings ──────────────────────────────────────── */
+.orbit-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -70%);
+  width: 0;
+  height: 0;
+}
+
+.orbit {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  transform-origin: center center;
+}
+
+.ring-1 {
+  width: 220px; height: 220px;
+  top: -110px; left: -110px;
+  border-color: rgba(108, 99, 255, 0.3);
+  animation: orbitSpin 8s linear infinite;
+  box-shadow: 0 0 20px rgba(108,99,255,0.15) inset;
+}
+.ring-2 {
+  width: 300px; height: 180px;
+  top: -90px; left: -150px;
+  border-color: rgba(0, 245, 212, 0.25);
+  animation: orbitSpin 14s linear infinite reverse;
+  transform: rotateX(70deg);
+}
+.ring-3 {
+  width: 340px; height: 200px;
+  top: -100px; left: -170px;
+  border-color: rgba(255, 107, 157, 0.2);
+  animation: orbitSpin 20s linear infinite;
+  transform: rotateX(60deg) rotateZ(45deg);
+}
+
+@keyframes orbitSpin {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
+.ring-2 { animation-name: orbitSpin2; }
+.ring-3 { animation-name: orbitSpin3; }
+@keyframes orbitSpin2 {
+  from { transform: rotateX(70deg) rotateY(0deg); }
+  to   { transform: rotateX(70deg) rotateY(-360deg); }
+}
+@keyframes orbitSpin3 {
+  from { transform: rotateX(60deg) rotateZ(45deg) rotateY(0deg); }
+  to   { transform: rotateX(60deg) rotateZ(45deg) rotateY(360deg); }
+}
+
+.orbit-dot {
+  position: absolute;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  top: -4px; left: calc(50% - 4px);
+}
+.dot-1 { background: var(--primary); box-shadow: 0 0 12px var(--primary), 0 0 24px var(--primary); }
+.dot-2 { background: var(--accent);  box-shadow: 0 0 12px var(--accent),  0 0 24px var(--accent); }
+.dot-3 { background: var(--accent2); box-shadow: 0 0 12px var(--accent2), 0 0 24px var(--accent2); }
+
+/* ── Loader Card ─────────────────────────────────────────── */
+.loader-card {
+  position: relative;
+  z-index: 10;
+  width: min(480px, 94vw);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  backdrop-filter: blur(20px);
+  box-shadow:
+    0 0 0 1px rgba(108,99,255,0.1),
+    0 20px 60px rgba(0,0,0,0.6),
+    0 0 80px rgba(108,99,255,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+  overflow: hidden;
+  transform: translateY(30px);
+  animation: cardEntrance 0.8s cubic-bezier(0.22,1,0.36,1) 0.3s forwards;
+}
+
+@keyframes cardEntrance {
+  from { opacity: 0; transform: translateY(50px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)  scale(1); }
+}
+.loader-card { opacity: 0; }
+
+/* card top shimmer line */
+.loader-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+  animation: shimmerLine 3s linear infinite;
+}
+@keyframes shimmerLine {
+  0%   { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.card-inner {
+  padding: 36px 36px 28px;
+}
+
+/* ── AI Label ────────────────────────────────────────────── */
+.ai-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.ai-icon {
+  color: var(--accent);
+  font-size: 18px;
+  animation: spinIcon 4s linear infinite;
+}
+@keyframes spinIcon { to { transform: rotate(360deg); } }
+
+.ai-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  font-weight: 400;
+}
+.ai-badge {
+  margin-left: auto;
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.15em;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: rgba(108,99,255,0.2);
+  border: 1px solid rgba(108,99,255,0.4);
+  color: var(--primary);
+  animation: badgePulse 2s ease-in-out infinite;
+}
+@keyframes badgePulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(108,99,255,0.4); }
+  50%      { box-shadow: 0 0 0 6px rgba(108,99,255,0); }
+}
+
+/* ── Title ───────────────────────────────────────────────── */
+.main-title {
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 18px;
+  letter-spacing: -0.02em;
+}
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary), var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% auto;
+  animation: gradientFlow 4s linear infinite;
+}
+@keyframes gradientFlow {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* ── Status area ─────────────────────────────────────────── */
+.status-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  min-height: 22px;
+}
+.status-line {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  flex: 1;
+}
+.status-dots span {
+  display: inline-block;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--primary);
+  margin: 0 2px;
+  animation: dotPulse 1.2s ease-in-out infinite;
+}
+.status-dots span:nth-child(2) { animation-delay: 0.2s; }
+.status-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotPulse {
+  0%,80%,100% { transform: scale(0.6); opacity: 0.4; }
+  40%         { transform: scale(1.2); opacity: 1; }
+}
+
+/* ── Progress bar ────────────────────────────────────────── */
+.progress-track {
+  position: relative;
+  height: 10px;
+  border-radius: 99px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.07);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 24px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5));
+  border-radius: 99px;
+}
+.progress-shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shineMove 2s linear infinite;
+}
+@keyframes shineMove {
+  from { background-position: -200% 0; }
+  to   { background-position: 300% 0; }
+}
+.progress-glow {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0;
+  width: 0%;
+  background: linear-gradient(90deg, transparent, var(--accent));
+  filter: blur(8px);
+  transition: width 0.4s ease;
+  opacity: 0.6;
+}
+
+/* ── Percent display ─────────────────────────────────────── */
+.percent-display {
+  text-align: right;
+  margin-bottom: 20px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.percent-value {
+  font-size: 42px;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--text), var(--primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+.percent-sign {
+  font-size: 18px;
+  color: var(--muted);
+  vertical-align: top;
+  margin-top: 6px;
+  display: inline-block;
+}
+
+/* ── Modules ─────────────────────────────────────────────── */
+.modules {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+.module {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--muted);
+  transition: color 0.3s;
+}
+.module.active { color: var(--text); }
+.module.done { color: var(--accent); }
+
+.mod-icon {
+  font-size: 14px;
+  width: 18px;
+  text-align: center;
+  transition: all 0.3s;
+}
+.module.done .mod-icon { color: var(--accent); }
+.module.active .mod-icon { color: var(--primary); animation: iconSpin 1s linear infinite; }
+@keyframes iconSpin { to { transform: rotate(360deg); } }
+
+.mod-label { flex: 1; font-size: 11px; letter-spacing: 0.05em; }
+
+.mod-bar {
+  width: 80px;
+  height: 3px;
+  border-radius: 99px;
+  background: rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+.mod-bar span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: width 1.5s cubic-bezier(0.4,0,0.2,1);
+}
+.module.done .mod-bar span { width: 100%; }
+.module.active .mod-bar span { width: 60%; animation: modPulse 1.2s ease-in-out infinite; }
+@keyframes modPulse {
+  0%,100% { width: 50%; }
+  50%     { width: 75%; }
+}
+
+/* ── Waveform ────────────────────────────────────────────── */
+.waveform {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 36px;
+}
+.wave-bar {
+  width: 3px;
+  border-radius: 99px;
+  background: linear-gradient(0deg, var(--primary), var(--accent));
+  animation: wave calc(0.6s + var(--i) * 0.05s) ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * 0.04s);
+}
+@keyframes wave {
+  from { height: 4px; opacity: 0.3; }
+  to   { height: calc(8px + var(--i) * 1.5px); opacity: 1; }
+}
+
+/* ── HUD corners ─────────────────────────────────────────── */
+.hud {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.hud-line {
+  height: 1.5px;
+  width: 48px;
+  background: rgba(108, 99, 255, 0.4);
+  border-radius: 2px;
+}
+.hud-line.short { width: 28px; }
+
+.hud-tl { top: 24px; left: 24px; }
+.hud-tr { top: 24px; right: 24px; align-items: flex-end; }
+.hud-bl { bottom: 24px; left: 24px; }
+.hud-br { bottom: 24px; right: 24px; align-items: flex-end; }
+
+/* ── Scan line ───────────────────────────────────────────── */
+.scan-line {
+  position: absolute;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0,245,212,0.4), transparent);
+  animation: scanDown 5s linear infinite;
+  pointer-events: none;
+}
+@keyframes scanDown {
+  from { top: 0; opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  to   { top: 100vh; opacity: 0; }
+}
+
+/* ── Complete overlay ────────────────────────────────────── */
+.complete-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(7,6,15,0.92);
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+  z-index: 100;
+}
+.complete-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+.complete-icon {
+  font-size: 72px;
+  color: var(--accent);
+  animation: completePop 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  transform: scale(0);
+  margin-bottom: 16px;
+  text-shadow: 0 0 40px var(--accent), 0 0 80px rgba(0,245,212,0.5);
+}
+@keyframes completePop {
+  to { transform: scale(1) rotate(360deg); }
+}
+.complete-text {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  font-family: 'JetBrains Mono', monospace;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+.complete-sub {
+  font-size: 14px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+</style>
 <script>
-  const flipDuration = 1500;
-  let autoInterval;
-  let currentPage = 1;
-  const totalPages = 11;
+    /* ============================================================
+   AI LOADING SCREEN — script.js
+   ============================================================ */
 
-  function setZIndexMidway(pageElem, newZ, delayMs) {
-    setTimeout(() => {
-      pageElem.style.zIndex = newZ;
-    }, delayMs);
+/* ─────────────────────────────────────────────────────────────
+   1. Neural canvas (animated node-link graph)
+───────────────────────────────────────────────────────────── */
+(function initNeuralCanvas() {
+  const canvas = document.getElementById('neural-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, nodes = [], animFrame;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    buildNodes();
   }
 
-  function nextPage() {
-    if (currentPage < totalPages) {
-      const page = document.getElementById(`page` + currentPage);
-      page.classList.add('flipped');
-      // When page goes to the left side, assign it a z-index based on its place in the left stack
-      setZIndexMidway(page, currentPage, flipDuration / 2);
-      currentPage++;
+  function buildNodes() {
+    nodes = [];
+    const count = Math.floor((W * H) / 18000);
+    for (let i = 0; i < count; i++) {
+      nodes.push({
+        x:  Math.random() * W,
+        y:  Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        r:  Math.random() * 2 + 1,
+        pulse: Math.random() * Math.PI * 2,
+      });
     }
   }
 
-  function startAnimationSeq() {
-    // Wait for the front cover cool effects to securely complete!
-    // Total typing animations take ~6.5 seconds. Wait 8s for reading.
-    setTimeout(() => {
-      nextPage(); // Reveal Image 1 Full Spread
-      
-      // Auto flip to exactly reveal the next 2-page spreads
-      autoInterval = setInterval(() => {
-        if (currentPage < totalPages) {
-           nextPage();
-        } else {
-           clearInterval(autoInterval); // stop completely at loading screen!
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const t = performance.now() / 1000;
+
+    // Move nodes
+    nodes.forEach(n => {
+      n.x += n.vx;
+      n.y += n.vy;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+      n.pulse += 0.02;
+    });
+
+    // Draw edges
+    const maxDist = 160;
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const d  = Math.sqrt(dx * dx + dy * dy);
+        if (d < maxDist) {
+          const alpha = (1 - d / maxDist) * 0.25;
+          const hue   = 250 + Math.sin(t * 0.3 + i * 0.1) * 30;
+          ctx.strokeStyle = `hsla(${hue}, 80%, 65%, ${alpha})`;
+          ctx.lineWidth   = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.stroke();
         }
-      }, 4500); 
-    }, 8000); 
+      }
+    }
+
+    // Draw nodes
+    nodes.forEach((n, i) => {
+      const hue   = 175 + Math.sin(t * 0.5 + i * 0.2) * 80;
+      const size  = n.r * (1 + 0.3 * Math.sin(n.pulse));
+      const alpha = 0.5 + 0.3 * Math.sin(n.pulse);
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, size, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${hue}, 90%, 70%, ${alpha})`;
+      ctx.fill();
+    });
+
+    // Occasional "data pulse" — a bright line racing across
+    if (Math.sin(t * 1.2) > 0.97) {
+      const ni = Math.floor(Math.random() * nodes.length);
+      const nj = Math.floor(Math.random() * nodes.length);
+      const grad = ctx.createLinearGradient(nodes[ni].x, nodes[ni].y, nodes[nj].x, nodes[nj].y);
+      grad.addColorStop(0, 'transparent');
+      grad.addColorStop(0.5, 'rgba(0,245,212,0.8)');
+      grad.addColorStop(1, 'transparent');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(nodes[ni].x, nodes[ni].y);
+      ctx.lineTo(nodes[nj].x, nodes[nj].y);
+      ctx.stroke();
+    }
+
+    animFrame = requestAnimationFrame(draw);
   }
 
-  // Ensures everything starts perfectly formatted
-  window.onload = startAnimationSeq;
-</script>
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+})();
 
-</body>
-</html>
+
+/* ─────────────────────────────────────────────────────────────
+   2. Floating particles
+───────────────────────────────────────────────────────────── */
+(function initParticles() {
+  const container = document.getElementById('particles');
+  const colors = [
+    ['#6c63ff', 0.5],
+    ['#00f5d4', 0.4],
+    ['#ff6b9d', 0.35],
+    ['#a78bfa', 0.45],
+  ];
+
+  for (let i = 0; i < 60; i++) {
+    const el    = document.createElement('div');
+    el.className = 'particle';
+
+    const [color, maxOp] = colors[i % colors.length];
+    const size  = Math.random() * 5 + 2;
+    const dur   = 7 + Math.random() * 10;
+    const delay = -Math.random() * 15;
+    const left  = Math.random() * 100;
+
+    el.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${left}%;bottom:${-size}px;
+      background:${color};
+      box-shadow: 0 0 ${size * 3}px ${color};
+      --dur:${dur}s;
+      --delay:${delay}s;
+      --max-op:${maxOp};
+    `;
+    container.appendChild(el);
+  }
+})();
+
+
+/* ─────────────────────────────────────────────────────────────
+   3. Progress + status logic
+───────────────────────────────────────────────────────────── */
+(function initProgress() {
+  const fill      = document.getElementById('progress-fill');
+  const glow      = document.getElementById('progress-glow');
+  const valueEl   = document.getElementById('percent-value');
+  const statusEl  = document.getElementById('status-text');
+  const modules   = Array.from(document.querySelectorAll('.module'));
+  const complete  = document.getElementById('complete');
+
+  const stages = [
+    { label: 'Booting neural core...',       pct: 0  },
+    { label: 'Loading language weights...',  pct: 20 },
+    { label: 'Initializing vision engine...',pct: 40 },
+    { label: 'Weaving memory mesh...',       pct: 60 },
+    { label: 'Calibrating reasoning layer...',pct: 80 },
+    { label: 'Synchronising all systems...', pct: 95 },
+    { label: 'System ready.',               pct: 100 },
+  ];
+
+  let current  = 0;  // displayed percentage
+  let target   = 0;
+  let stageIdx = 0;
+  let animating = true;
+
+  // Activate first module
+  modules[0].classList.add('active');
+  modules[0].querySelector('.mod-icon').textContent = '◌';
+
+  function setPercent(pct) {
+    fill.style.width     = pct + '%';
+    glow.style.width     = pct + '%';
+    valueEl.textContent  = Math.round(pct);
+
+    // Module activation
+    const modStep = Math.floor(pct / 20);
+    modules.forEach((m, i) => {
+      const step = parseInt(m.dataset.step, 10);
+      if (step < modStep) {
+        m.classList.remove('active');
+        m.classList.add('done');
+        m.querySelector('.mod-icon').textContent = '◆';
+      } else if (step === modStep) {
+        m.classList.add('active');
+        m.querySelector('.mod-icon').textContent = '◌';
+      }
+    });
+  }
+
+  // Smooth counter animation
+  function animateToTarget() {
+    if (!animating) return;
+    if (current < target) {
+      current += Math.max(0.3, (target - current) * 0.04);
+      if (current >= target) current = target;
+      setPercent(current);
+    }
+    requestAnimationFrame(animateToTarget);
+  }
+  animateToTarget();
+
+  // Advance stages
+  function nextStage() {
+    if (stageIdx >= stages.length) return;
+    const stage = stages[stageIdx];
+    target = stage.pct;
+
+    // Typewriter-style status text
+    const text = stage.label;
+    statusEl.textContent = '';
+    let ci = 0;
+    const typeInterval = setInterval(() => {
+      statusEl.textContent += text[ci++];
+      if (ci >= text.length) clearInterval(typeInterval);
+    }, 30);
+
+    stageIdx++;
+
+    if (stageIdx < stages.length) {
+      const delay = stageIdx === stages.length - 1 ? 1400 : 900 + Math.random() * 600;
+      setTimeout(nextStage, delay);
+    } else {
+      // Complete!
+      setTimeout(() => {
+        animating = false;
+        setPercent(100);
+        modules.forEach(m => {
+          m.classList.remove('active');
+          m.classList.add('done');
+          m.querySelector('.mod-icon').textContent = '◆';
+          m.querySelector('.mod-bar span').style.width = '100%';
+        });
+        setTimeout(() => complete.classList.add('show'), 400);
+      }, 1200);
+    }
+  }
+
+  // Kick off
+  setTimeout(nextStage, 600);
+})();
+
+
+/* ─────────────────────────────────────────────────────────────
+   4. Mouse-parallax tilt on card
+───────────────────────────────────────────────────────────── */
+(function initParallax() {
+  const card = document.querySelector('.loader-card');
+  document.addEventListener('mousemove', e => {
+    const cx = window.innerWidth  / 2;
+    const cy = window.innerHeight / 2;
+    const dx = (e.clientX - cx) / cx;
+    const dy = (e.clientY - cy) / cy;
+    card.style.transform = `perspective(900px) rotateY(${dx * 4}deg) rotateX(${-dy * 3}deg) translateY(0)`;
+  });
+  document.addEventListener('mouseleave', () => {
+    card.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg)';
+  });
+})();
+
+</script>
