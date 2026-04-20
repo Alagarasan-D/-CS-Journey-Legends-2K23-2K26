@@ -1,0 +1,469 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome — CS-Journey-Legends-2K23-2K26</title>
+<link rel="icon" type="image/jpeg" href="https://res.cloudinary.com/deatzzrsw/image/upload/v1773304356/IMG_20260110_112102_bvebrv.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;width:100%;overflow:hidden;background:#000;}
+body{font-family:'Cormorant Garamond',serif;display:flex;align-items:center;justify-content:center;}
+
+canvas#bg{position:fixed;inset:0;z-index:0;}
+
+/* ── PHASE 1: Name reveal ── */
+#phase1{
+  position:fixed;inset:0;z-index:10;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:20px;
+  animation:ph1Out 0.8s ease 3.2s forwards;
+}
+@keyframes ph1Out{to{opacity:0;transform:scale(1.05);pointer-events:none;}}
+
+.welcome-small{
+  font-family:'Orbitron',sans-serif;font-size:clamp(0.7rem,2vw,0.9rem);
+  letter-spacing:8px;color:rgba(255,215,0,0.6);
+  animation:fadeUp 0.8s ease 0.3s both;
+}
+.welcome-name{
+  font-family:'Cinzel Decorative',cursive;
+  font-size:clamp(2rem,6vw,4.5rem);
+  background:linear-gradient(135deg,#ffd700,#fff8dc,#ff8c00,#ffd700);
+  background-size:300%;
+  background-clip:text;              
+  -webkit-background-clip:text;      
+  color:transparent;                 
+  -webkit-text-fill-color:transparent;
+  animation:fadeUp 1s ease 0.6s both, shimmer 2.5s linear 1s infinite;
+  filter:drop-shadow(0 0 30px #ffd70066);
+}
+@keyframes shimmer{0%{background-position:0%}100%{background-position:300%}}
+
+.welcome-dept{
+  font-style:italic;color:rgba(255,255,255,0.45);
+  font-size:clamp(0.9rem,2.5vw,1.2rem);letter-spacing:3px;
+  animation:fadeUp 1s ease 1s both;
+}
+
+/* Heart pulse */
+.heart{
+  font-size:3rem;
+  animation:heartbeat 0.8s ease 1.5s infinite;
+  opacity:0;animation-fill-mode:both;
+}
+.heart-wrap{animation:fadeUp 0.5s ease 1.3s both;}
+@keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+
+/* ── PHASE 2: Student photo (Individual) ── */
+#phase2{
+  position:fixed;inset:0;z-index:11;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:20px; opacity:0; pointer-events:none;
+  animation:ph2In 0.8s ease 3.5s forwards, ph2Out 0.8s ease 7s forwards;
+}
+@keyframes ph2In{to{opacity:1;pointer-events:auto;}}
+@keyframes ph2Out{to{opacity:0;pointer-events:none;}}
+
+.photo-frame{
+  width:min(220px,55vw);height:min(220px,55vw);
+  border-radius:50%;
+  border:3px solid rgba(255,215,0,0.5);
+  box-shadow:0 0 40px rgba(255,215,0,0.3),0 0 80px rgba(255,215,0,0.1);
+  overflow:hidden;position:relative;
+  background:linear-gradient(135deg,#0d0d24,#1a1a38);
+  display:flex;align-items:center;justify-content:center;
+}
+.photo-frame img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+}
+.photo-frame img.active{
+  display:block;
+}
+.photo-placeholder{
+  font-size:4rem;
+  opacity:0.4;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  height:100%;
+}
+.photo-frame .placeholder-active{
+  display:flex;
+}
+.photo-name{
+  font-family:'Cinzel Decorative',cursive;
+  font-size:clamp(1rem,3vw,1.6rem);
+  color:#ffd700;letter-spacing:4px;
+  text-shadow:0 0 20px #ffd70066;
+}
+.photo-tag{
+  font-style:italic;color:rgba(255,255,255,0.4);
+  font-size:0.9rem;letter-spacing:2px;
+}
+
+/* ── PHASE 3: Group photo ── */
+#phase3{
+  position:fixed;inset:0;z-index:12;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:16px; opacity:0; pointer-events:none;
+  animation:ph2In 1s ease 7.3s forwards;
+}
+.group-frame{
+  width:100vw;
+  height:100vh;
+  border-radius:0;
+  border:none;
+  box-shadow:none;
+  overflow:hidden;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.group-frame img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  display:none;
+}
+.group-frame img.active{
+  display:block;
+}
+.group-placeholder{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  color:rgba(255,255,255,0.3);
+}
+.group-title{
+  font-family:'Cinzel Decorative',cursive;
+  font-size:clamp(1rem,3vw,1.8rem);
+  color:#ffd700;letter-spacing:4px;
+  text-shadow:0 0 20px #ffd70066;
+}
+.group-sub{
+  font-style:italic;color:rgba(255,255,255,0.4);
+  font-size:0.9rem;letter-spacing:2px;
+}
+
+/* ── TRANSITION ── */
+#enterBtn{
+  padding:14px 40px;margin-top:4px;
+  background:linear-gradient(135deg,#ffd700,#ff8c00);
+  border:none;border-radius:50px;
+  font-family:'Cinzel Decorative',cursive;
+  font-size:0.9rem;letter-spacing:3px;color:#000;
+  cursor:pointer;box-shadow:0 0 30px #ffd70044;
+  transition:all .3s;
+  z-index:13;
+  position:relative;
+}
+#enterBtn:hover{transform:scale(1.05);box-shadow:0 0 50px #ffd700aa;}
+
+/* Flash */
+#flash{
+  position:fixed;inset:0;background:#000;
+  z-index:999;opacity:0;pointer-events:none;
+  transition:opacity 0.6s;
+}
+#flash.active{opacity:1;}
+
+/* Petals/particles */
+.petal{
+  position:fixed;border-radius:50% 0 50% 0;
+  pointer-events:none;z-index:5;
+  animation:petalFall linear infinite;
+}
+@keyframes petalFall{
+  0%{transform:translateY(-10vh) rotate(0deg);opacity:0;}
+  10%{opacity:0.8;}90%{opacity:0.8;}
+  100%{transform:translateY(110vh) rotate(360deg);opacity:0;}
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(25px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* Responsive */
+@media(max-width:480px){
+  .welcome-name{font-size:2rem;}
+  .photo-frame{width:170px;height:170px;}
+}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<!-- Hidden audio element for BGM - plays throughout welcome page -->
+<audio id="bgMusic" loop>
+  <source src="name loading.mp3" type="audio/mpeg">
+</audio>
+
+<!-- PHASE 1: Personal welcome -->
+<div id="phase1">
+  <div class="welcome-small">✦ &nbsp; WELCOME BACK &nbsp; ✦</div>
+  <div class="welcome-name" id="studentName">FRIEND</div>
+  <div class="welcome-dept">Computer Science · 2023 – 2026</div>
+  <div class="heart-wrap"><div class="heart">💛</div></div>
+</div>
+
+<!-- PHASE 2: Student photo (Individual) -->
+<div id="phase2">
+  <div class="photo-frame" id="studentPhotoFrame">
+    <!-- Placeholder - shown when no image -->
+    <div class="photo-placeholder" id="photoPlaceholder">👤</div>
+    
+    <!-- Individual student images - you can add online image URLs here later -->
+    <img id="studentImg" class="" src="" alt="Student Photo">
+  </div>
+  <div class="photo-name" id="photoName">YOUR NAME</div>
+  <div class="photo-tag" id="photoTag">CS-Journey-Legends-2K23-2K26 &nbsp;·&nbsp; Batch Member</div>
+</div>
+
+<!-- PHASE 3: Group photo -->
+<div id="phase3">
+  <div class="group-title">Our Batch 💛</div>
+  <div class="group-frame" id="groupPhotoFrame">
+    <!-- Placeholder - shown when no group image -->
+    <div class="group-placeholder" id="groupPlaceholder">
+      <span style="font-size:3rem">📸</span>
+      <span style="font-size:0.8rem;letter-spacing:2px;">GROUP PHOTO HERE</span>
+    </div>
+    
+    <!-- Group photo - add your online image URL later -->
+    <img id="groupImg" class="" src="" alt="Group Photo">
+  </div>
+  <div class="group-sub">CS-Journey-Legends-2K23-2K26 · 68 Hearts · One Family</div>
+  <button id="enterBtn" onclick="enterMain()">✦ &nbsp; ENTER PORTAL &nbsp; ✦</button>
+</div>
+
+<div id="flash"></div>
+
+<script>
+/* ── Get student info from login ── */
+const studentName = localStorage.getItem('studentName') || 'FRIEND';
+const studentEmail = localStorage.getItem('loggedEmail') || '';
+
+// Display name in phase 1 and 2
+document.getElementById('studentName').textContent = studentName;
+document.getElementById('photoName').textContent = studentName;
+
+// Show Staff members only for the two specified emails
+const staffEmails = ['gramrasi@gmail.com', 'onum2illai@gmail.com'];
+if (staffEmails.includes(studentEmail)) {
+  document.getElementById('photoTag').innerHTML = 'CS-Journey-Legends-2K23-2K26 &nbsp;·&nbsp; Staff members';
+}
+
+/* ── Set individual student photo based on email ── */
+// You can replace these with actual image URLs later
+const studentPhotos = {
+"kabilanaarakan@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776267030/abi_soe96s.jpg",
+"aadheeshwark@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263270/adheshwaran_xpkfzb.jpg",
+"alag123arasan@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263250/alagu_n3ttjv.jpg",
+"masterbhrth@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263249/bharathkumar_knpo1s.jpg",
+"boobalanbn24@gmail.com":"https://res.cloudinary.com/dilsx2np3/image/upload/q_auto/f_auto/v1776491456/IMG-20250221-WA0006_ezxzcf.jpg",
+"dharshan130206@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263251/dharshan_koj8h2.jpg",
+"sridharunkumar@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263288/dharunkumar_t8u2rv.jpg",
+"dinesh14006@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263260/dineshkumar_ia4nr0.jpg",
+"dgowrishankar81@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263256/gowrishankar_jvauax.jpg",
+"20gowtham06@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263250/gowtham_ikdfxw.jpg",
+"jagathesh45891@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263257/jagadhesh_wp9ybh.jpg",
+"jaijaikanth873@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/c_auto,g_north,h_521,w_490/c_auto,g_north,h_1286,w_1308/jaikanth_dprupw.jpg",
+"karanrajkanagaraj148@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263260/karanraj_grcwcs.jpg",
+"karthikarthiperiyasamy@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/c_auto,g_north,h_521,w_490/c_auto,g_north,h_1286,w_1308/karthickraja_q8iqfg.jpg",
+"monishram002@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/c_auto,g_north,h_521,w_490/c_auto,g_north,h_1286,w_1308/monishram_jt0xet.png",
+"nandha456kumar@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263264/nandhakumar_xevm7f.jpg",
+"nithish.nst@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263270/nithish_q8r80j.jpg",
+"massajith601@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263276/periyannan_tnxjbh.png",
+"prakash9342244019@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263272/prakshraj_cncyby.jpg",
+"prasanna202k@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/c_auto,g_north,h_521,w_490/c_auto,g_north,h_1286,w_1308/prasana_t8tdzu.jpg",
+"pravinmanoj200022006@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263272/pravinkumar_kduchn.jpg",
+"rajasanthi0709@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263273/raja_kjzq4k.jpg",
+"rathnavel829@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263273/rathinavel_gzxgcv.jpg",
+"sarravanakumarmariappan@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263282/rithisabinav_azntlf.jpg",
+"sanjai9487771308@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263275/sanjai_pz5su9.jpg",
+"gksaran985@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263279/saran_sscyfx.jpg",
+"saravanansekar005@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263276/saravanan_l39q6v.webp",
+"shandrua2005@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263277/shandru_qxizih.jpg",
+"duraisamyvrr@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263279/subash_mkavg3.jpg",
+"sundharkgf@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263279/sundheresan_bdlmbu.jpg",
+"tamilmani9361934449@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263282/tamilmani_xndnsf.jpg",
+"thirutm80@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/t_a/thirumalai_ufenvt.jpg",
+"vetrimurugavel2006@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263282/vetrivel_jxnqbz.webp",
+"vigneshvinesh2005@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776263287/vignesh_y8ydwi.jpg",
+"sureshvijaya2005@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/c_auto,g_north,h_521,w_490/c_auto,g_north,h_1286,w_1308/Anusya_sboe5u.jpg",
+"deepikap18062006@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776356898/deepika_sfwywn.jpg",
+"www.dharshinidharshini2007@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/c_auto,g_north,h_521,w_490/dharishini_ntxkkd.jpg",
+"kumarmbks12345@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776357167/divya_khzldc.jpg",
+"gopikav032005@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/c_auto,g_north,h_521,w_490/c_auto,g_north,h_1286,w_1308/gopika_2_crb3us.jpg",
+"vsaker52@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/c_auto,g_north,h_521,w_490/c_auto,g_north,h_1286,w_1308/harini_a1e9lj.jpg",
+"jamunaselvakumar9080@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776357258/jamuna_y5bgmb.jpg",
+"j9898757@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776357172/janani_glbt0j.jpg",
+"alexjames21857@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/c_auto,g_north,h_521,w_490/c_auto,g_north,h_1286,w_1308/jasmine_udsv4w.jpg",
+"jeevajothirjothi678@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/c_auto,g_north,h_521,w_490/c_auto,g_north,h_1286,w_1308/jeevajothi_cjivnd.jpg",
+"kanmaninatesan205@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/c_auto,g_north,h_521,w_490/c_auto,g_north,h_1286,w_1308/kanmani_yvumjq.jpg",
+"kannankrishnaveni667@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776357263/krishnaveni_tswtbe.jpg",
+"mathumithakanagaraj58@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776357294/Maheswari_mccri1.jpg",
+"manishaa24112005@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776357280/manisha_yf4lto.jpg",
+"monikav28072006@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/c_auto,g_north,h_521,w_490/c_auto,g_north,h_1286,w_1308/Monika_bmqxek.jpg",
+"senthilkumarkarthika007@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776357267/navya_zbjpxl.jpg",
+"pavibpavi466@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776357275/pavithara_yiqyww.webp",
+"prasannasbsc@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776357303/prasanna_dtkhww.jpg",
+"rakshitharathinam2006@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/c_auto,g_north,h_521,w_490/c_auto,g_north,h_1286,w_1308/rakshitha_nvz84g.jpg",
+"sandhiyasureshkumar273@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776357326/santhiya_wkzjyo.jpg",
+"sangeethakannan8489@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/c_auto,g_north,h_521,w_490/c_auto,g_north,h_1286,w_1308/sangetha_tsdaln.jpg",
+"sangeethavanic986519@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776357314/sangeethavanii_byuqzk.jpg",
+"saranyas052006@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776357326/sarniya_rd94oz.jpg",
+"sathyasaminathan624@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/c_auto,g_north,h_521,w_490/c_auto,g_north,h_1286,w_1308/sathaya_fu0yli.jpg",
+"msowmiya987@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776357324/Sowmiyaa_p44whl.jpg",
+"sowmiyavishnu869@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776357292/IMG_7459_wxn2vo.jpg",
+"vishnumuthuupm1978@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/c_auto,g_north,h_521,w_490/c_auto,g_north,h_1286,w_1308/swathi_gjsxjz.jpg",
+"thirishac9@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776357363/thirisha_dwska3.jpg",
+"vasanthishivan2006@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776357367/vasanthi_bxpk5c.jpg",
+"onum2illai@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776582824/cs_gplmlk.jpg",
+"gramrasi@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/c_auto,g_north,h_521,w_490/c_auto,h_986,w_808/ram_jrhr70.jpg",
+"snadhiya10062006@gmail.com":"https://res.cloudinary.com/deatzzrsw/image/upload/v1776357281/nathiya_cmtlkw.jpg"
+};
+
+
+// Set student photo if available
+if (studentEmail && studentPhotos[studentEmail]) {
+  const studentImg = document.getElementById('studentImg');
+  studentImg.src = studentPhotos[studentEmail];
+  studentImg.classList.add('active');
+  document.getElementById('photoPlaceholder').style.display = 'none';
+}
+
+/* ── Set group photo (same for everyone) ── */
+// 3-image slideshow: each image 2s (total 6s per full cycle)
+const groupPhotos = [
+  "https://res.cloudinary.com/dilsx2np3/image/upload/q_auto/f_auto/v1776491785/IMG-20240112-WA0006_cquvzf.jpg",
+  "https://res.cloudinary.com/deatzzrsw/image/upload/v1775372098/IMG-20260109-WA0051_ekkqlu.jpg",
+  "https://res.cloudinary.com/deatzzrsw/image/upload/v1773304658/IMG_20260110_160057_j8w8h8.jpg",
+  "	https://res.cloudinary.com/deatzzrsw/image/upload/v1773304670/IMG_20260110_160307_mdh3fr.jpg",
+  "https://res.cloudinary.com/deatzzrsw/image/upload/v1775372095/IMG_20260110_112102_o3iywb.jpg"
+];
+
+let groupSlideTimer = null;
+if (groupPhotos.length) {
+  const groupImg = document.getElementById('groupImg');
+  const groupPlaceholder = document.getElementById('groupPlaceholder');
+  let groupIndex = 0;
+
+  groupImg.src = groupPhotos[groupIndex];
+  groupImg.classList.add('active');
+  groupPlaceholder.style.display = 'none';
+
+  groupSlideTimer = setInterval(() => {
+    groupIndex = (groupIndex + 1) % groupPhotos.length;
+    groupImg.src = groupPhotos[groupIndex];
+  }, 2000);
+}
+
+/* ── BG Canvas ── */
+const c=document.getElementById('bg'),ctx=c.getContext('2d');
+c.width=innerWidth;c.height=innerHeight;
+const stars=Array.from({length:200},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.3+0.2,phase:Math.random()*Math.PI*2,spd:Math.random()*0.3+0.1}));
+let t=0;
+(function loop(){
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.fillStyle='#04040f';ctx.fillRect(0,0,c.width,c.height);
+  const g=ctx.createRadialGradient(c.width/2,c.height/2,0,c.width/2,c.height/2,c.width*0.7);
+  g.addColorStop(0,'rgba(10,10,40,0.6)');g.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=g;ctx.fillRect(0,0,c.width,c.height);
+  t+=0.01;
+  stars.forEach(s=>{
+    const o=0.2+0.7*Math.abs(Math.sin(t*s.spd+s.phase));
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,225,100,${o})`;ctx.fill();
+  });
+  requestAnimationFrame(loop);
+})();
+
+/* ── Petals ── */
+const cols=['#ffd700','#ffaad4','#ffcc88','#fff8dc','#00d4ff'];
+for(let i=0;i<25;i++){
+  const p=document.createElement('div');p.className='petal';
+  const col=cols[~~(Math.random()*cols.length)],sz=4+Math.random()*10;
+  p.style.cssText=`left:${Math.random()*100}vw;width:${sz}px;height:${sz}px;background:${col};opacity:0.7;animation-duration:${10+Math.random()*15}s;animation-delay:${Math.random()*10}s;`;
+  document.body.appendChild(p);
+}
+
+/* ── Music (starts with welcome page) ── */
+const audio = document.getElementById('bgMusic');
+audio.volume = 0.5;
+
+// Custom songs for specific emails (fallback is default track)
+const emailToSong = {
+  'sowmiyavishnu869@gmail.com': 'https://res.cloudinary.com/dilsx2np3/video/upload/q_auto/f_auto/v1776585418/sowmiya_uimu9s.mp3',
+  'monikav28072006@gmail.com': 'https://res.cloudinary.com/dilsx2np3/video/upload/q_auto/f_auto/v1776585418/monika_rugo3s.mp3',
+  'gopikav032005@gmail.com': 'https://res.cloudinary.com/dilsx2np3/video/upload/q_auto/f_auto/v1776585418/gopika_sy2oof.mp3'
+};
+
+const selectedSong = emailToSong[(studentEmail || '').toLowerCase()] || 'name loading.mp3';
+const sourceEl = audio.querySelector('source');
+if (sourceEl) {
+  sourceEl.src = selectedSong;
+  audio.load();
+}
+
+// Try to play audio (may be blocked by browser)
+function playAudio() {
+  audio.play().catch(() => {});
+}
+
+// Start audio when page loads
+playAudio();
+
+// Also play on any click if autoplay was blocked
+document.addEventListener('click', function playOnClick() {
+  if (audio.paused) {
+    audio.play().catch(() => {});
+  }
+}, { once: true });
+
+// Stop music when leaving for home.html
+function enterMain(){
+  if (groupSlideTimer) {
+    clearInterval(groupSlideTimer);
+    groupSlideTimer = null;
+  }
+
+  // Fade out music
+  const fadeOut = setInterval(() => {
+    if (audio.volume > 0.1) {
+      audio.volume -= 0.1;
+    } else {
+      audio.pause();
+      audio.volume = 0.5; // Reset volume
+      clearInterval(fadeOut);
+    }
+  }, 100);
+  
+  // Flash effect and redirect
+  document.getElementById('flash').classList.add('active');
+  setTimeout(() => window.location.href = 'home.html', 700);
+}
+
+/* ── Auto-redirect after 12s if no click ── */
+setTimeout(() => { 
+  enterMain();
+}, 14500);
+
+window.addEventListener('resize',()=>{c.width=innerWidth;c.height=innerHeight;});
+</script>
+<div class="footer-credit" style="position:fixed;bottom:15px;right:15px;z-index:1000;">
+  <a href="https://ardinfotech03-debug.github.io/ARD-Infotech/" target="_blank" rel="noopener noreferrer" style="font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:1px;color:rgba(255,215,0,0.6);text-decoration:none;background:rgba(0,0,0,0.6);padding:6px 12px;border-radius:20px;backdrop-filter:blur(5px);transition:all .3s;">Designed by ARD InfoTech</a>
+</div>
+</body>
+</html>
+

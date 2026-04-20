@@ -1,0 +1,778 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>CS-Journey-Legends-2K23-2K26 · Memory Portal</title>
+<link rel="icon" type="image/jpeg" href="https://res.cloudinary.com/deatzzrsw/image/upload/v1773304356/IMG_20260110_112102_bvebrv.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #ffd700;
+  --gold2: #ff8c00;
+  --teal: #00d4ff;
+  --dark: #04040f;
+  --card: #0d0d24;
+  --card-light: #1a1a38;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+body {
+  background: var(--dark);
+  font-family: 'Cormorant Garamond', serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 16px;
+  position: relative;
+}
+
+/* Background */
+#bg {
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 20% 50%, #0a0a3e44 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, #1a0a0044 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 80%, #00102044 0%, transparent 60%),
+    #04040f;
+  z-index: 0;
+}
+
+canvas#stars {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Floating particles */
+.fp {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  animation: fpRise linear infinite;
+}
+
+@keyframes fpRise {
+  0% { transform: translateY(105vh); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* Main Card */
+#card {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(145deg, rgba(13, 13, 36, 0.9), rgba(26, 26, 56, 0.9));
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 24px;
+  padding: clamp(24px, 6vw, 50px) clamp(20px, 5vw, 60px);
+  width: min(480px, 100%);
+  max-width: 480px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 
+    0 0 60px rgba(255, 215, 0, 0.08),
+    0 0 120px rgba(0, 212, 255, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  animation: cardIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  margin: 16px;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Decorative elements */
+.card::before,
+.card::after {
+  content: '✦';
+  position: absolute;
+  top: 20px;
+  color: rgba(255, 215, 0, 0.2);
+  font-size: 1rem;
+}
+
+.card::before {
+  left: 20px;
+}
+
+.card::after {
+  right: 20px;
+}
+
+/* Header */
+.card-badge {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(0.55rem, 2vw, 0.65rem);
+  letter-spacing: 4px;
+  color: var(--teal);
+  text-align: center;
+  margin-bottom: 8px;
+  opacity: 0.8;
+  word-break: keep-all;
+}
+
+.card-title {
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: clamp(1.2rem, 5vw, 1.8rem);
+  text-align: center;
+  margin-bottom: 4px;
+  background: linear-gradient(135deg, #ffd700, #fff8dc, #ff8c00);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+  line-height: 1.3;
+  padding: 0 8px;
+}
+
+.card-sub {
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: clamp(0.8rem, 3vw, 0.9rem);
+  text-align: center;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+  word-break: keep-all;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  margin: 0 auto 24px;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.3), transparent);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px 8px;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(0.6rem, 2.5vw, 0.7rem);
+  letter-spacing: 2px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+@media (max-width: 360px) {
+  .tab-btn {
+    white-space: normal;
+    padding: 8px 4px;
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+  }
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 140, 0, 0.1));
+  color: var(--gold);
+  border-color: var(--gold);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.form-label {
+  display: block;
+  font-size: clamp(0.7rem, 2.5vw, 0.78rem);
+  letter-spacing: 2px;
+  color: rgba(255, 215, 0, 0.7);
+  margin-bottom: 8px;
+  font-family: 'Orbitron', monospace;
+}
+
+.form-input {
+  width: 100%;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #fff;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  outline: none;
+  /* Fix appearance styling */
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Optional focus effect (keeps same style but smoother interaction) */
+.form-input:focus {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.form-input:focus {
+  border-color: var(--teal);
+  background: rgba(0, 212, 255, 0.05);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* Date input styling */
+input[type="date"] {
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* DOB hint */
+.dob-hint {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  margin-top: 6px;
+  letter-spacing: 1px;
+  font-style: italic;
+}
+
+/* Submit button */
+.btn-login {
+  width: 100%;
+  padding: 16px;
+  margin-top: 12px;
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  border: none;
+  border-radius: 12px;
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: clamp(0.9rem, 4vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #000;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(255, 215, 0, 0.5);
+}
+
+.btn-login:active {
+  transform: translateY(0);
+}
+
+/* Public badge */
+.pub-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 30px;
+  padding: 8px 18px;
+  font-size: clamp(0.65rem, 2.5vw, 0.72rem);
+  letter-spacing: 2px;
+  color: var(--teal);
+  font-family: 'Orbitron', monospace;
+  margin-bottom: 18px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.public-description {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: clamp(0.85rem, 3vw, 0.95rem);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 0 10px;
+}
+
+/* Public link */
+.public-link {
+  text-align: center;
+  margin-top: 24px;
+  font-size: clamp(0.8rem, 3vw, 0.9rem);
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 1px;
+}
+
+.public-link a {
+  color: var(--teal);
+  text-decoration: none;
+  transition: all 0.3s;
+  padding: 8px 4px;
+  display: inline-block;
+}
+
+.public-link a:hover {
+  color: #fff;
+  text-shadow: 0 0 10px var(--teal);
+}
+
+/* Toast notification */
+#toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #1a1a38;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: #ffd700;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  opacity: 0;
+  transition: all 0.4s;
+  z-index: 1000;
+  white-space: nowrap;
+  max-width: 90vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+#toast.error {
+  border-color: #ff4444;
+  color: #ff8888;
+}
+
+/* Small screens adjustments */
+@media (max-width: 380px) {
+  #card {
+    padding: 20px 16px;
+    margin: 12px;
+  }
+  
+  .form-input {
+    padding: 12px 14px;
+  }
+  
+  .btn-login {
+    padding: 14px;
+  }
+}
+
+/* Landscape orientation */
+@media (max-height: 600px) and (orientation: landscape) {
+  body {
+    padding: 8px;
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+  
+  #card {
+    margin: 8px auto;
+    padding: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 12px;
+  }
+}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<canvas id="stars"></canvas>
+
+<!-- Hidden audio element for BGM -->
+<audio id="bgMusic" loop preload="auto" volume=0.5>
+  <source src="https://res.cloudinary.com/dilsx2np3/video/upload/q_auto/f_auto/v1776585516/Login_klnmkq.wav" type="audio/mpeg">
+</audio>
+
+<div id="card">
+  <div class="card-badge">✦ &nbsp;  DEPARTMENT OF CS &nbsp; ✦</div>
+  <div class="card-title">CS-Journey-Legends-2K23-2K26</div>
+  <div class="card-sub">Batch Memory Portal</div>
+  <div class="divider"></div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="setTab('login')">🔐 LOGIN</button>
+    <button class="tab-btn" onclick="setTab('public')">😎 ADMIN </button>
+  </div>
+
+  <!-- LOGIN FORM -->
+  <div id="loginForm">
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      <input class="form-input" id="emailInput" type="email" placeholder="yourname@email.com" autocomplete="email">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Date of Birth (Password)</label>
+      <input class="form-input" id="dobInput" type="date">
+      <div class="dob-hint">Your date of birth is your password (DD-MM-YYYY)</div>
+    </div>
+    <button class="btn-login" onclick="doLogin()">▶ &nbsp; ENTER</button>
+  </div>
+
+  <!-- PUBLIC ACCESS -->
+<div id="publicSection" style="display:none;">
+  <div style="text-align:center;">
+    <div class="pub-badge">
+      🌍 ARD  CONTROLLING <br>
+      <span style="font-size:14px;letter-spacing:2px;opacity:0.8;">
+         INFOTECH THE ENTIRE WEBSITE
+      </span>
+    </div>
+    <p class="public-description">
+      Gallery, Videos and Memories are open to all.<br>
+      Login only needed for Feedback &amp; Chat.
+    </p>
+  </div>
+  <a href="" style="display:block;text-decoration:none;">
+    <button class="btn-login">🖼 &nbsp; 24/7 AVAILABLE </button>
+  </a>
+</div>
+ 
+</div>
+
+<div id="toast"></div>
+
+<!-- Firebase SDK -->
+<script type="module">
+  // Import Firebase modules
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+  // Your Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDT_dWHb6OuujWXpYEv-FRV48F9kDqsHFE",
+    authDomain: "email-93402.firebaseapp.com",
+    projectId: "email-93402",
+    storageBucket: "email-93402.firebasestorage.app",
+    messagingSenderId: "306356848557",
+    appId: "1:306356848557:web:4bc7cdfd614aa5542d8324"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Email to Name mapping (ALL 68 STUDENTS)
+const studentNames = {
+"kabilanaarakan@gmail.com": "ABISEK KUMAR",
+"aadheeshwark@gmail.com": "ADHEESHWAR",
+"alag123arasan@gmail.com": "ALAGARASAN",
+"masterbhrth@gmail.com": "BHARATHKUMAR",
+"boobalanbn24@gmail.com": "BOOBALAN",
+"dharshan130206@gmail.com": "DHARSHAN",
+"sridharunkumar@gmail.com": "DHARUNKUMAR",
+"dinesh14006@gmail.com": "DINESH KUMAR",
+"dgowrishankar81@gmail.com": "GOWRISHANKAR",
+"20gowtham06@gmail.com": "GOWTHAM",
+"jagathesh45891@gmail.com": "JAGATHESH",
+"jaijaikanth873@gmail.com": "JAIKANTH",
+"karanrajkanagaraj148@gmail.com": "KARANRAJ",
+"karthikarthiperiyasamy@gmail.com": "KARTHICKRAJA",
+"monishram002@gmail.com": "MONISHRAM",
+"nandha456kumar@gmail.com": "NANDHAKUMAR",
+"nithish.nst@gmail.com": "NITHISH",
+"massajith601@gmail.com": "PERIYANNAN",
+"prakash9342244019@gmail.com": "PRAKASH RAJ",
+"prasanna202k@gmail.com": "PRASANNA K",
+"pravinmanoj200022006@gmail.com": "PRAVINKUMAR",
+"rajasanthi0709@gmail.com": "RAJA",
+"rathnavel829@gmail.com": "RATHINAVEL",
+"sarravanakumarmariappan@gmail.com": "RITHISH ABINAV",
+"sanjai9487771308@gmail.com": "SANJAI",
+"gksaran985@gmail.com": "SARAN",
+"saravanansekar005@gmail.com": "SARAVANAN",
+"shandrua2005@gmail.com": "SHANDRU",
+"duraisamyvrr@gmail.com": "SUBASH",
+"sundharkgf@gmail.com": "SUNDHARESAN",
+"tamilmani9361934449@gmail.com": "TAMILMANI",
+"thirutm80@gmail.com": "THIRUMALAI",
+"vetrimurugavel2006@gmail.com": "VETRIVEL",
+"vigneshvinesh2005@gmail.com": "VIGNESH",
+"sureshvijaya2005@gmail.com": "ANUSUYA",
+"deepikap18062006@gmail.com": "DEEPIKA",
+"www.dharshinidharshini2007@gmail.com": "DHARSHINI",
+"kumarmbks12345@gmail.com": "DIVYA",
+"gopikav032005@gmail.com": "GOPIKA",
+"vsaker52@gmail.com": "HARINI",
+"jamunaselvakumar9080@gmail.com": "JAMUNA",
+"j9898757@gmail.com": "JANANI",
+"alexjames21857@gmail.com": "JASMINE PRINCY",
+"jeevajothirjothi678@gmail.com": "JEEVAJOTHI",
+"kanmaninatesan205@gmail.com": "KANMANI",
+"kannankrishnaveni667@gmail.com": "KRISHNAVENI",
+"mathumithakanagaraj58@gmail.com": "MAHESWARI",
+"manishaa24112005@gmail.com": "MANISHAA",
+"monikav28072006@gmail.com": "MONIKA",
+"senthilkumarkarthika007@gmail.com": "NAVYA",
+"pavibpavi466@gmail.com": "PAVITHRA",
+"prasannasbsc@gmail.com": "PRASANNA S",
+"rakshitharathinam2006@gmail.com": "RAKSHITHA",
+"sandhiyasureshkumar273@gmail.com": "SANDHIYA",
+"sangeethakannan8489@gmail.com": "SANGEETHA",
+"sangeethavanic986519@gmail.com": "SANGEETHAVANI",
+"saranyas052006@gmail.com": "SARANYA",
+"sathyasaminathan624@gmail.com": "SATHYA",
+"msowmiya987@gmail.com": "SOWMIYA 👀",
+"sowmiyavishnu869@gmail.com": "SOWMIYA 😻",
+"vishnumuthuupm1978@gmail.com": "SWATHI",
+"thirishac9@gmail.com": "THIRISHA",
+"vasanthishivan2006@gmail.com": "VASANTHI",
+"gramrasi@gmail.com": "RAM KUMAR",
+"onum2illai@gmail.com": "CS DEPTMENT STAFF MEMBERS",
+"snadhiya10062006@gmail.com": "NADHIYA"
+};
+
+  // Make doLogin function available globally
+  window.doLogin = async function() {
+    const email = document.getElementById('emailInput').value.trim().toLowerCase();
+    const dobInput = document.getElementById('dobInput').value;
+    
+    if (!email || !dobInput) {
+      showToast('Please fill all fields', true);
+      return;
+    }
+    
+    // Convert date from YYYY-MM-DD to DDMMYYYY format (as stored in Firebase)
+    const [year, month, day] = dobInput.split('-');
+    const password = `${day}${month}${year}`; // Format: DDMMYYYY (e.g., 17052006)
+    
+    showToast('⏳ Verifying...', false);
+    
+    try {
+      // Sign in with Firebase
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      
+      // Get student name from mapping
+      const studentName = studentNames[email] || email.split('@')[0].toUpperCase();
+      
+      // Store in localStorage for welcome page
+      localStorage.setItem('loggedEmail', email);
+      localStorage.setItem('studentName', studentName);
+      
+      showToast(`✓ Welcome, ${studentName}!`);
+      
+      // Redirect to welcome page
+      setTimeout(() => {
+        window.location.href = 'welcome.html';
+      }, 1500);
+      
+    } catch (error) {
+      console.error('Login error:', error);
+      
+      // Handle Firebase errors
+      let errorMessage = 'Invalid email or password';
+      
+      switch(error.code) {
+        case 'auth/user-not-found':
+          errorMessage = 'Email not registered';
+          break;
+        case 'auth/wrong-password':
+          errorMessage = 'Incorrect date of birth';
+          break;
+        case 'auth/invalid-email':
+          errorMessage = 'Invalid email format';
+          break;
+        case 'auth/too-many-requests':
+          errorMessage = 'Too many attempts. Try again later';
+          break;
+        case 'auth/network-request-failed':
+          errorMessage = 'Network error. Check connection';
+          break;
+      }
+      
+      showToast(errorMessage, true);
+    }
+  };
+
+  // Tab switching function
+  window.setTab = function(tab) {
+    const loginBtn = document.querySelectorAll('.tab-btn')[0];
+    const publicBtn = document.querySelectorAll('.tab-btn')[1];
+    const loginForm = document.getElementById('loginForm');
+    const publicSection = document.getElementById('publicSection');
+    
+    if (tab === 'login') {
+      loginBtn.classList.add('active');
+      publicBtn.classList.remove('active');
+      loginForm.style.display = 'block';
+      publicSection.style.display = 'none';
+    } else {
+      loginBtn.classList.remove('active');
+      publicBtn.classList.add('active');
+      loginForm.style.display = 'none';
+      publicSection.style.display = 'block';
+    }
+  };
+</script>
+
+<script>
+// Toast notification function (non-module)
+function showToast(message, isError = false) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.className = 'show' + (isError ? ' error' : '');
+  
+  setTimeout(() => {
+    toast.className = '';
+  }, 3000);
+}
+
+// Stars animation
+const canvas = document.getElementById('stars');
+let ctx = canvas.getContext('2d');
+let width, height;
+let stars = [];
+
+function initStars() {
+  width = window.innerWidth;
+  height = window.innerHeight;
+  canvas.width = width;
+  canvas.height = height;
+  
+  stars = [];
+  for (let i = 0; i < 200; i++) {
+    stars.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      radius: Math.random() * 1.5 + 0.5,
+      speed: Math.random() * 0.5 + 0.2,
+      phase: Math.random() * Math.PI * 2
+    });
+  }
+}
+
+function animateStars() {
+  if (!ctx) return;
+  
+  ctx.clearRect(0, 0, width, height);
+  
+  const time = Date.now() * 0.002;
+  
+  stars.forEach(star => {
+    const brightness = 0.3 + 0.7 * Math.abs(Math.sin(time * star.speed + star.phase));
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255, 220, 150, ${brightness})`;
+    ctx.fill();
+  });
+  
+  requestAnimationFrame(animateStars);
+}
+
+// Floating particles
+function createParticles() {
+  const colors = ['#ffd700', '#7ecfff', '#ffaad4', '#00d4ff'];
+  const particlesCount = 30;
+  
+  for (let i = 0; i < particlesCount; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'fp';
+    
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const size = Math.random() * 4 + 2;
+    const duration = Math.random() * 15 + 12;
+    const delay = Math.random() * 12;
+    const left = Math.random() * 100;
+    
+    particle.style.cssText = `
+      left: ${left}vw;
+      width: ${size}px;
+      height: ${size}px;
+      background: ${color};
+      box-shadow: 0 0 6px ${color};
+      animation-duration: ${duration}s;
+      animation-delay: -${delay}s;
+    `;
+    
+    document.body.appendChild(particle);
+  }
+}
+
+// Handle resize
+function handleResize() {
+  initStars();
+}
+
+// Initialize everything
+window.addEventListener('load', () => {
+  initStars();
+  animateStars();
+  createParticles();
+  
+  // Start BGM
+  const audio = document.getElementById('bgMusic');
+  audio.volume = 0.3;
+  audio.play().catch(() => {});
+});
+
+window.addEventListener('resize', () => {
+  handleResize();
+});
+
+// Prevent form submission on enter key
+document.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter' && document.getElementById('loginForm').style.display !== 'none') {
+    e.preventDefault();
+    doLogin();
+  }
+});
+
+// Handle user interaction for audio
+document.addEventListener('click', function initAudio() {
+  const audio = document.getElementById('bgMusic');
+  if (audio.paused) {
+    audio.play().catch(() => {});
+  }
+}, { once: true });
+</script>
+<div class="footer-credit" style="position:fixed;bottom:15px;right:15px;z-index:1000;">
+  <a href="https://ardinfotech03-debug.github.io/ARD-Infotech/" target="_blank" rel="noopener noreferrer"style="font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:1px;color:rgba(255,215,0,0.6);text-decoration:none;background:rgba(0,0,0,0.6);padding:6px 12px;border-radius:20px;backdrop-filter:blur(5px);transition:all .3s;">Designed by ARD InfoTech</a>
+</div>
+</body>
+</html>
+
+

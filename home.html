@@ -1,0 +1,1453 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home — CS-Journey-Legends-2K23-2K26</title>
+<link rel="icon" type="image/jpeg" href="https://res.cloudinary.com/deatzzrsw/image/upload/v1773304356/IMG_20260110_112102_bvebrv.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#ffd700;--gold2:#ff8c00;--teal:#00d4ff;
+  --dark:#04040f;--card:#0d0d24;--text:rgba(255,255,255,0.85);
+  --nav-h:70px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-padding-top:var(--nav-h);scroll-behavior:smooth;}
+body{background:var(--dark);color:var(--text);font-family:'Cormorant Garamond',serif;overflow-x:hidden;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:#000;}
+::-webkit-scrollbar-thumb{background:linear-gradient(#ffd700,#ff8c00);border-radius:3px;}
+nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(4,4,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,215,0,0.12);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,48px);z-index:1000;transition:all .3s;}
+.nav-logo{font-family:'Cinzel Decorative',cursive;font-size:clamp(0.8rem,2vw,1.1rem);background:linear-gradient(135deg,#ffd700,#ff8c00);background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;letter-spacing:2px;white-space:nowrap;}
+.nav-links{display:flex;gap:clamp(12px,2.5vw,28px);align-items:center;}
+.nav-links a{font-family:'Orbitron',monospace;font-size:clamp(0.7rem,1.5vw,0.9rem);letter-spacing:2px;color:rgba(255,255,255,0.55);text-decoration:none;transition:all .3s;padding:6px 2px;border-bottom:1px solid transparent;white-space:nowrap;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);border-bottom-color:var(--gold);}
+#profileBtn{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#ffd70033,#ff8c0022);border:1px solid rgba(255,215,0,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;transition:all .3s;flex-shrink:0;overflow:hidden;}
+#profileBtn:hover{background:linear-gradient(135deg,#ffd70055,#ff8c0033);transform:scale(1.1);}
+#menuToggle{display:none;align-items:center;justify-content:center;background:none;border:1px solid rgba(255,215,0,0.3);color:var(--gold);padding:6px 10px;border-radius:6px;cursor:pointer;font-size:1.1rem;}
+#mobileMenu{display:none;position:fixed;top:var(--nav-h);left:0;right:0;background:rgba(4,4,15,0.98);border-bottom:1px solid rgba(255,215,0,0.1);padding:16px 20px;z-index:999;flex-direction:column;gap:2px;}
+#mobileMenu a{font-family:'Orbitron',monospace;font-size:0.7rem;letter-spacing:3px;color:rgba(255,255,255,0.6);text-decoration:none;padding:14px 8px;border-bottom:1px solid rgba(255,255,255,0.05);transition:color .2s;}
+#mobileMenu a:hover,#mobileMenu a.active{color:var(--gold);}
+#mobileMenu.open{display:flex;}
+#home{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(var(--nav-h)+40px) 20px 60px;position:relative;overflow:hidden;text-align:center;gap:18px;}
+#hero-canvas{position:absolute;inset:0;z-index:0;}
+.hero-badge{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:6px;color:var(--teal);animation:fadeUp 0.8s ease both;position:relative;z-index:2;}
+.hero-title{font-family:'Cinzel Decorative',cursive;font-size:clamp(1.8rem,7vw,5rem);font-weight:900;line-height:1.2;background:linear-gradient(135deg,#ffd700,#fff8dc,#ff8c00,#ffd700);background-size:300%;background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:fadeUp 1s ease 0.2s both,shimmer 3s linear 1s infinite;filter:drop-shadow(0 0 40px #ffd70055);position:relative;z-index:2;}
+@keyframes shimmer{0%{background-position:0%}100%{background-position:300%}}
+.hero-sub{font-style:italic;color:rgba(255,255,255,0.5);font-size:clamp(1rem,2.5vw,1.4rem);letter-spacing:3px;animation:fadeUp 1s ease 0.5s both;position:relative;z-index:2;}
+.hero-quote{color:rgba(255,215,0,0.6);font-style:italic;font-size:clamp(0.9rem,2vw,1.2rem);max-width:500px;line-height:1.8;animation:fadeUp 1s ease 0.8s both;position:relative;z-index:2;}
+.hero-stats{display:flex;gap:clamp(20px,5vw,60px);animation:fadeUp 1s ease 1s both;position:relative;z-index:2;flex-wrap:wrap;justify-content:center;}
+.stat{text-align:center;}
+.stat-num{font-family:'Orbitron',monospace;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:700;color:var(--gold);text-shadow:0 0 20px #ffd70066;display:block;}
+.stat-label{font-size:0.75rem;letter-spacing:3px;color:rgba(255,255,255,0.4);}
+.scroll-down{position:relative;z-index:2;margin-top:10px;animation:bounce 2s ease infinite 2s;color:rgba(255,215,0,0.4);font-size:1.5rem;cursor:pointer;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+section{padding:80px clamp(16px,5vw,80px);position:relative;}
+.section-header{text-align:center;margin-bottom:48px;}
+.section-badge{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:5px;color:var(--teal);margin-bottom:10px;display:block;}
+.section-title{font-family:'Cinzel Decorative',cursive;font-size:clamp(1.4rem,4vw,2.5rem);background:linear-gradient(135deg,#ffd700,#ff8c00);background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 10px #ffd70033);}
+.section-divider{width:80px;height:2px;margin:14px auto 0;background:linear-gradient(90deg,transparent,#ffd700,transparent);}
+#names-section{background:radial-gradient(ellipse at center,#0a0a2e33 0%,transparent 70%);}
+.names-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(200px,45vw),1fr));gap:12px;max-width:1100px;margin:0 auto;}
+.name-card{padding:14px 18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;font-size:clamp(0.8rem,1.8vw,1rem);letter-spacing:2px;text-align:center;transition:all .3s;cursor:default;position:relative;overflow:hidden;}
+.name-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,0.03),transparent);transform:translateX(-100%);transition:transform .5s;}
+.name-card:hover::before{transform:translateX(100%);}
+.name-card.boy{color:#7ecfff;border-color:#7ecfff22;}
+.name-card.boy:hover{background:rgba(126,207,255,0.08);border-color:#7ecfff55;box-shadow:0 0 20px rgba(126,207,255,0.15);}
+.name-card.girl{color:#ffaad4;border-color:#ffaad422;}
+.name-card.girl:hover{background:rgba(255,170,212,0.08);border-color:#ffaad455;box-shadow:0 0 20px rgba(255,170,212,0.15);}
+.gender-label{font-family:'Orbitron',monospace;font-size:0.7rem;letter-spacing:5px;margin:28px 0 14px;color:var(--gold);text-align:center;}
+#gallery{background:#000;}
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(250px,45vw),1fr));gap:16px;max-width:1200px;margin:0 auto;}
+.gallery-item{border-radius:12px;overflow:hidden;aspect-ratio:4/3;background:linear-gradient(135deg,#0d0d24,#1a1a38);border:1px solid rgba(255,215,0,0.1);position:relative;cursor:pointer;transition:all .4s;}
+.gallery-item:hover{transform:scale(1.03);border-color:rgba(255,215,0,0.4);box-shadow:0 10px 40px rgba(255,215,0,0.15);}
+.gallery-item img{width:100%;height:100%;object-fit:cover;opacity:0.8;transition:opacity .3s;}
+.gallery-item:hover img{opacity:1;}
+.gallery-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:rgba(255,255,255,0.2);font-size:0.75rem;letter-spacing:2px;}
+.gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);opacity:0;transition:opacity .3s;display:flex;align-items:flex-end;padding:14px;}
+.gallery-item:hover .gallery-overlay{opacity:1;}
+.gallery-label{font-size:0.8rem;letter-spacing:2px;color:#fff;}
+#videos{background:radial-gradient(ellipse at 50% 0%,#0a0a2e33 0%,transparent 60%);}
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(320px,90vw),1fr));gap:20px;max-width:1100px;margin:0 auto;}
+.video-card{border-radius:14px;overflow:hidden;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);transition:all .4s;}
+.video-card:hover{border-color:rgba(255,215,0,0.3);box-shadow:0 8px 30px rgba(255,215,0,0.1);}
+.video-wrap{aspect-ratio:16/9;overflow:hidden;}
+.video-wrap iframe{width:100%;height:100%;border:none;}
+.video-info{padding:14px 16px;}
+.video-title{font-size:1rem;letter-spacing:1px;margin-bottom:4px;color:rgba(255,255,255,0.8);}
+.video-sub{font-size:0.78rem;color:rgba(255,215,0,0.5);letter-spacing:1px;}
+#memories{background:#000;}
+.memory-timeline{max-width:800px;margin:0 auto;position:relative;padding-left:30px;}
+.memory-timeline::before{content:'';position:absolute;left:6px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,#ffd70000,#ffd700aa,#ffd70000);}
+.memory-item{position:relative;margin-bottom:40px;animation:fadeUp 0.6s ease both;}
+.memory-dot{position:absolute;left:-27px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold);}
+.memory-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,215,0,0.12);border-radius:12px;padding:20px 22px;transition:all .3s;}
+.memory-card:hover{background:rgba(255,215,0,0.05);border-color:rgba(255,215,0,0.3);}
+.memory-year{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;color:var(--gold);margin-bottom:8px;}
+.memory-text{font-size:1rem;line-height:1.8;color:rgba(255,255,255,0.7);font-style:italic;}
+
+/* ── FEEDBACK BASE STYLES ── */
+#feedback{background:radial-gradient(ellipse at center,#0a0a2e44 0%,transparent 70%);scroll-margin-top:80px;overflow-anchor:none;}
+.feedback-wrap{max-width:700px;margin:0 auto;}
+.feedback-note{text-align:center;margin-bottom:28px;background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.15);border-radius:12px;padding:16px 20px;font-size:0.9rem;color:rgba(255,255,255,0.55);line-height:1.8;}
+.feedback-note b{color:var(--teal);}
+.fb-label{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:3px;color:rgba(255,215,0,0.7);margin-bottom:8px;display:block;}
+.fb-select,.fb-textarea{width:100%;padding:14px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:'Cormorant Garamond',serif;font-size:1rem;outline:none;transition:all .3s;}
+.fb-select option{background:#0d0d24;}
+.fb-select:focus,.fb-textarea:focus{border-color:var(--teal);background:rgba(0,212,255,0.05);}
+.fb-textarea{height:120px;resize:vertical;line-height:1.6;}
+.fb-submit{width:100%;padding:15px;margin-top:12px;background:linear-gradient(135deg,#ffd700,#ff8c00);border:none;border-radius:12px;font-family:'Cinzel Decorative',cursive;font-size:0.95rem;letter-spacing:3px;color:#000;cursor:pointer;transition:all .3s;box-shadow:0 4px 20px rgba(255,215,0,0.25);}
+.fb-submit:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,215,0,0.4);}
+.fb-login-warn{text-align:center;padding:30px;color:rgba(255,255,255,0.4);font-style:italic;font-size:1rem;}
+.fb-login-warn a{color:var(--teal);text-decoration:none;}
+
+/* Contact Cards - Landscape Layout */
+#contact{background:#000;padding:80px clamp(16px,5vw,80px);}
+.contact-cards-container{max-width:1200px;margin:0 auto;}
+.contact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.contact-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:28px 22px;text-align:center;transition:all .4s;}
+.contact-card:hover{background:rgba(255,215,0,0.04);border-color:rgba(255,215,0,0.25);transform:translateY(-4px);}
+.contact-icon{font-size:2rem;margin-bottom:12px;display:block;}
+.contact-name{font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:3px;color:var(--gold);margin-bottom:6px;}
+.contact-detail{font-size:0.9rem;color:rgba(255,255,255,0.45);letter-spacing:1px;}
+@media(max-width:900px){.contact-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.contact-grid{grid-template-columns:1fr;}}
+
+#profileModal{position:fixed;top:80px;right:20px;width:min(300px,90vw);background:rgba(8,8,30,0.97);border:1px solid rgba(255,215,0,0.25);border-radius:16px;padding:24px;z-index:2000;backdrop-filter:blur(20px);box-shadow:0 20px 60px rgba(0,0,0,0.6);transform:translateY(-10px);opacity:0;pointer-events:none;transition:all .3s;}
+#profileModal.open{transform:translateY(0);opacity:1;pointer-events:auto;}
+.profile-avatar{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#ffd70033,#ff8c0022);border:2px solid rgba(255,215,0,0.4);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 14px;overflow:hidden;}
+#profilePhoto{width:100%;height:100%;border-radius:50%;object-fit:cover;display:none;}
+#profileEmoji{display:block;}
+.student-profile-badge-photo{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;}
+.profile-name{font-family:'Cinzel Decorative',cursive;font-size:1rem;text-align:center;color:var(--gold);margin-bottom:4px;}
+.profile-email{text-align:center;font-size:0.8rem;color:rgba(255,255,255,0.4);margin-bottom:18px;letter-spacing:1px;}
+.profile-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.85rem;}
+.profile-row-label{color:rgba(255,215,0,0.6);font-size:0.7rem;letter-spacing:2px;}
+.profile-row-val{color:rgba(255,255,255,0.6);}
+.btn-logout{width:100%;margin-top:16px;padding:12px;background:rgba(255,80,80,0.12);border:1px solid rgba(255,80,80,0.25);border-radius:10px;color:#ff8888;font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:3px;cursor:pointer;transition:all .3s;}
+.btn-logout:hover{background:rgba(255,80,80,0.25);}
+footer{padding:40px 20px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);position:relative;}
+.footer-title{font-family:'Cinzel Decorative',cursive;font-size:1rem;background:linear-gradient(135deg,#ffd700,#ff8c00);background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;margin-bottom:8px;}
+.footer-sub{font-size:0.8rem;color:rgba(255,255,255,0.25);letter-spacing:2px;}
+.footer-credit{position:fixed;bottom:15px;right:15px;z-index:1000;}
+.footer-credit a{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:1px;color:rgba(255,215,0,0.6);text-decoration:none;background:rgba(0,0,0,0.6);padding:6px 12px;border-radius:20px;backdrop-filter:blur(5px);transition:all .3s;}
+.footer-credit a:hover{color:var(--gold);background:rgba(0,0,0,0.8);}
+@media(max-width:700px){.footer-credit{bottom:10px;right:10px;}.footer-credit a{font-size:0.55rem;padding:4px 10px;}}
+section:nth-child(even){background:linear-gradient(to right,#04040f,#06060f,#04040f);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+@media(max-width:700px){.nav-links{display:none;}#menuToggle{display:block;}.hero-stats{gap:30px;}section{padding:60px 16px;}}
+
+/* Card color themes */
+.fb-card-c0 { border-color:rgba(255,215,0,0.35)!important;  box-shadow:0 8px 30px rgba(255,215,0,0.12)!important; }
+.fb-card-c1 { border-color:rgba(0,212,255,0.35)!important;  box-shadow:0 8px 30px rgba(0,212,255,0.12)!important; }
+.fb-card-c2 { border-color:rgba(255,107,157,0.35)!important;box-shadow:0 8px 30px rgba(255,107,157,0.12)!important; }
+.fb-card-c3 { border-color:rgba(144,238,144,0.35)!important;box-shadow:0 8px 30px rgba(144,238,144,0.12)!important; }
+.fb-card-c4 { border-color:rgba(255,165,0,0.35)!important;  box-shadow:0 8px 30px rgba(255,165,0,0.12)!important; }
+.fb-card-c5 { border-color:rgba(180,100,255,0.35)!important;box-shadow:0 8px 30px rgba(180,100,255,0.12)!important; }
+
+.fb-name-c0 { color:#ffd700!important; }
+.fb-name-c1 { color:#00d4ff!important; }
+.fb-name-c2 { color:#ff6b9d!important; }
+.fb-name-c3 { color:#90ee90!important; }
+.fb-name-c4 { color:#ffa500!important; }
+.fb-name-c5 { color:#b464ff!important; }
+
+/* STAFF SHOWCASE */
+#staff{background:radial-gradient(ellipse at center,#0a0a2e44 0%,transparent 70%);}
+.staff-showcase-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,90vw),1fr));gap:24px;max-width:1400px;margin:0 auto;}
+.sc-card{position:relative;border-radius:20px;overflow:hidden;background:rgba(10,10,30,0.85);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,0.07);cursor:default;transition:transform .42s cubic-bezier(.23,1,.32,1),box-shadow .42s ease;}
+.sc-card:hover{transform:translateY(-10px) scale(1.025);z-index:10;}
+.sc-img-wrap{width:100%;aspect-ratio:1/1.08;position:relative;overflow:hidden;}
+.sc-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;transition:transform .55s ease;}
+.sc-card:hover .sc-img-wrap img{transform:scale(1.08);}
+.sc-avatar{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:clamp(3rem,8vw,5rem);}
+.sc-bar{position:absolute;top:0;left:0;right:0;height:3px;border-radius:20px 20px 0 0;}
+.sc-info{padding:18px 20px 20px;position:relative;}
+.sc-name{font-family:'Cinzel Decorative',cursive;font-size:clamp(0.8rem,1.8vw,0.98rem);font-weight:900;line-height:1.35;margin-bottom:5px;}
+.sc-year{font-family:'Orbitron',monospace;font-size:0.58rem;letter-spacing:3px;color:rgba(255,255,255,0.38);margin-bottom:10px;}
+.sc-desig{display:inline-block;font-family:'Orbitron',monospace;font-size:0.55rem;letter-spacing:2px;padding:5px 13px;border-radius:30px;border-width:1px;border-style:solid;font-weight:600;}
+.sc-shine{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.06) 0%,transparent 55%);pointer-events:none;border-radius:inherit;}
+.sc-t1{border-color:rgba(255,215,0,0.28);box-shadow:0 8px 36px rgba(255,215,0,0.13);} .sc-t1:hover{box-shadow:0 22px 55px rgba(255,215,0,0.28);} .sc-t1 .sc-bar{background:linear-gradient(90deg,#ffd700,#ff8c00,#ffd700);} .sc-t1 .sc-img-wrap{background:linear-gradient(160deg,#1c1400,#0d0b00);} .sc-t1 .sc-name{color:#ffd700;text-shadow:0 0 18px #ffd70055;} .sc-t1 .sc-desig{color:#ffd700;border-color:rgba(255,215,0,0.38);background:rgba(255,215,0,0.1);}
+.sc-t2{border-color:rgba(0,212,255,0.22);box-shadow:0 8px 36px rgba(0,212,255,0.1);} .sc-t2:hover{box-shadow:0 22px 55px rgba(0,212,255,0.25);} .sc-t2 .sc-bar{background:linear-gradient(90deg,#00d4ff,#0088cc,#00d4ff);} .sc-t2 .sc-img-wrap{background:linear-gradient(160deg,#001a20,#000d14);} .sc-t2 .sc-name{color:#00d4ff;text-shadow:0 0 18px #00d4ff55;} .sc-t2 .sc-desig{color:#00d4ff;border-color:rgba(0,212,255,0.38);background:rgba(0,212,255,0.1);}
+.sc-t3{border-color:rgba(191,127,255,0.22);box-shadow:0 8px 36px rgba(191,127,255,0.1);} .sc-t3:hover{box-shadow:0 22px 55px rgba(191,127,255,0.25);} .sc-t3 .sc-bar{background:linear-gradient(90deg,#bf7fff,#7f00ff,#bf7fff);} .sc-t3 .sc-img-wrap{background:linear-gradient(160deg,#130020,#0a0014);} .sc-t3 .sc-name{color:#bf7fff;text-shadow:0 0 18px #bf7fff55;} .sc-t3 .sc-desig{color:#bf7fff;border-color:rgba(191,127,255,0.38);background:rgba(191,127,255,0.1);}
+.sc-t4{border-color:rgba(255,107,157,0.22);box-shadow:0 8px 36px rgba(255,107,157,0.1);} .sc-t4:hover{box-shadow:0 22px 55px rgba(255,107,157,0.25);} .sc-t4 .sc-bar{background:linear-gradient(90deg,#ff6b9d,#cc0066,#ff6b9d);} .sc-t4 .sc-img-wrap{background:linear-gradient(160deg,#1a0010,#0d0008);} .sc-t4 .sc-name{color:#ff6b9d;text-shadow:0 0 18px #ff6b9d55;} .sc-t4 .sc-desig{color:#ff6b9d;border-color:rgba(255,107,157,0.38);background:rgba(255,107,157,0.1);}
+.sc-t5{border-color:rgba(0,255,170,0.22);box-shadow:0 8px 36px rgba(0,255,170,0.1);} .sc-t5:hover{box-shadow:0 22px 55px rgba(0,255,170,0.25);} .sc-t5 .sc-bar{background:linear-gradient(90deg,#00ffaa,#00cc66,#00ffaa);} .sc-t5 .sc-img-wrap{background:linear-gradient(160deg,#001a0f,#00100a);} .sc-t5 .sc-name{color:#00ffaa;text-shadow:0 0 18px #00ffaa55;} .sc-t5 .sc-desig{color:#00ffaa;border-color:rgba(0,255,170,0.38);background:rgba(0,255,170,0.1);}
+.sc-t6{border-color:rgba(255,140,0,0.22);box-shadow:0 8px 36px rgba(255,140,0,0.1);} .sc-t6:hover{box-shadow:0 22px 55px rgba(255,140,0,0.25);} .sc-t6 .sc-bar{background:linear-gradient(90deg,#ff8c00,#ff4500,#ff8c00);} .sc-t6 .sc-img-wrap{background:linear-gradient(160deg,#1a0800,#0d0400);} .sc-t6 .sc-name{color:#ff8c00;text-shadow:0 0 18px #ff8c0055;} .sc-t6 .sc-desig{color:#ff8c00;border-color:rgba(255,140,0,0.38);background:rgba(255,140,0,0.1);}
+.sc-t7{border-color:rgba(136,194,255,0.22);box-shadow:0 8px 36px rgba(136,194,255,0.1);} .sc-t7:hover{box-shadow:0 22px 55px rgba(136,194,255,0.25);} .sc-t7 .sc-bar{background:linear-gradient(90deg,#88c2ff,#4488ff,#88c2ff);} .sc-t7 .sc-img-wrap{background:linear-gradient(160deg,#001020,#000810);} .sc-t7 .sc-name{color:#88c2ff;text-shadow:0 0 18px #88c2ff55;} .sc-t7 .sc-desig{color:#88c2ff;border-color:rgba(136,194,255,0.38);background:rgba(136,194,255,0.1);}
+.sc-t8{border-color:rgba(255,88,88,0.22);box-shadow:0 8px 36px rgba(255,88,88,0.1);} .sc-t8:hover{box-shadow:0 22px 55px rgba(255,88,88,0.25);} .sc-t8 .sc-bar{background:linear-gradient(90deg,#ff5858,#cc0000,#ff5858);} .sc-t8 .sc-img-wrap{background:linear-gradient(160deg,#1a0000,#0d0000);} .sc-t8 .sc-name{color:#ff7875;text-shadow:0 0 18px #ff585855;} .sc-t8 .sc-desig{color:#ff7875;border-color:rgba(255,88,88,0.38);background:rgba(255,88,88,0.1);}
+.sc-t9{border-color:rgba(110,255,200,0.22);box-shadow:0 8px 36px rgba(110,255,200,0.1);} .sc-t9:hover{box-shadow:0 22px 55px rgba(110,255,200,0.25);} .sc-t9 .sc-bar{background:linear-gradient(90deg,#6effc8,#00d4aa,#6effc8);} .sc-t9 .sc-img-wrap{background:linear-gradient(160deg,#001a14,#000d0b);} .sc-t9 .sc-name{color:#6effc8;text-shadow:0 0 18px #6effc855;} .sc-t9 .sc-desig{color:#6effc8;border-color:rgba(110,255,200,0.38);background:rgba(110,255,200,0.1);}
+.sc-t10{border-color:rgba(198,170,255,0.22);box-shadow:0 8px 36px rgba(198,170,255,0.1);} .sc-t10:hover{box-shadow:0 22px 55px rgba(198,170,255,0.25);} .sc-t10 .sc-bar{background:linear-gradient(90deg,#c6aaff,#8855cc,#c6aaff);} .sc-t10 .sc-img-wrap{background:linear-gradient(160deg,#14001f,#0a0014);} .sc-t10 .sc-name{color:#c6aaff;text-shadow:0 0 18px #c6aaff55;} .sc-t10 .sc-desig{color:#c6aaff;border-color:rgba(198,170,255,0.38);background:rgba(198,170,255,0.1);}
+.sc-t11{border-color:rgba(255,190,50,0.22);box-shadow:0 8px 36px rgba(255,190,50,0.1);} .sc-t11:hover{box-shadow:0 22px 55px rgba(255,190,50,0.25);} .sc-t11 .sc-bar{background:linear-gradient(90deg,#ffbe32,#cc8800,#ffbe32);} .sc-t11 .sc-img-wrap{background:linear-gradient(160deg,#180e00,#0d0700);} .sc-t11 .sc-name{color:#ffbe32;text-shadow:0 0 18px #ffbe3255;} .sc-t11 .sc-desig{color:#ffbe32;border-color:rgba(255,190,50,0.38);background:rgba(255,190,50,0.1);}
+.sc-t12{border-color:rgba(64,200,255,0.22);box-shadow:0 8px 36px rgba(64,200,255,0.1);} .sc-t12:hover{box-shadow:0 22px 55px rgba(64,200,255,0.25);} .sc-t12 .sc-bar{background:linear-gradient(90deg,#40c8ff,#0077aa,#40c8ff);} .sc-t12 .sc-img-wrap{background:linear-gradient(160deg,#001520,#000b14);} .sc-t12 .sc-name{color:#40c8ff;text-shadow:0 0 18px #40c8ff55;} .sc-t12 .sc-desig{color:#40c8ff;border-color:rgba(64,200,255,0.38);background:rgba(64,200,255,0.1);}
+.sc-t13{border-color:rgba(255,50,200,0.22);box-shadow:0 8px 36px rgba(255,50,200,0.1);} .sc-t13:hover{box-shadow:0 22px 55px rgba(255,50,200,0.25);} .sc-t13 .sc-bar{background:linear-gradient(90deg,#ff32c8,#aa0088,#ff32c8);} .sc-t13 .sc-img-wrap{background:linear-gradient(160deg,#1a0018,#0d0010);} .sc-t13 .sc-name{color:#ff32c8;text-shadow:0 0 18px #ff32c855;} .sc-t13 .sc-desig{color:#ff32c8;border-color:rgba(255,50,200,0.38);background:rgba(255,50,200,0.1);}
+.sc-t14{border-color:rgba(180,255,60,0.22);box-shadow:0 8px 36px rgba(180,255,60,0.1);} .sc-t14:hover{box-shadow:0 22px 55px rgba(180,255,60,0.25);} .sc-t14 .sc-bar{background:linear-gradient(90deg,#b4ff3c,#77cc00,#b4ff3c);} .sc-t14 .sc-img-wrap{background:linear-gradient(160deg,#101a00,#080d00);} .sc-t14 .sc-name{color:#b4ff3c;text-shadow:0 0 18px #b4ff3c55;} .sc-t14 .sc-desig{color:#b4ff3c;border-color:rgba(180,255,60,0.38);background:rgba(180,255,60,0.1);}
+.sc-t15{border-color:rgba(255,180,120,0.22);box-shadow:0 8px 36px rgba(255,180,120,0.1);} .sc-t15:hover{box-shadow:0 22px 55px rgba(255,180,120,0.25);} .sc-t15 .sc-bar{background:linear-gradient(90deg,#ffb478,#ff6622,#ffb478);} .sc-t15 .sc-img-wrap{background:linear-gradient(160deg,#1a0f00,#0d0800);} .sc-t15 .sc-name{color:#ffb478;text-shadow:0 0 18px #ffb47855;} .sc-t15 .sc-desig{color:#ffb478;border-color:rgba(255,180,120,0.38);background:rgba(255,180,120,0.1);}
+@media(max-width:600px){.staff-showcase-grid{gap:16px;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">CS-Journey-Legends-2K23-2K26</div>
+  <div class="nav-links">
+    <a href="#home" class="active">Home</a>
+    <a href="Gallery.html">Gallery</a>
+    <a href="video.html">Videos</a>
+    <a href="Memories.html">Memories</a>
+    <a href="#feedback">Feedback</a>
+    <a href="Contact.html">Contact</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div id="profileBtn" onclick="toggleProfile()">👤</div>
+    <button id="menuToggle" onclick="toggleMenu()">☰</button>
+  </div>
+</nav>
+<div id="mobileMenu">
+  <a href="#home" class="active" onclick="closeMenu()">Home</a>
+  <a href="Gallery.html" onclick="closeMenu()">Gallery</a>
+  <a href="video.html" onclick="closeMenu()">Videos</a>
+  <a href="Memories.html" onclick="closeMenu()">Memories</a>
+  <a href="#feedback" onclick="closeMenu()">Feedback</a>
+  <a href="Contact.html" onclick="closeMenu()">Contact</a>
+</div>
+
+<div id="profileModal">
+  <div class="profile-avatar" id="profileAvatar">
+    <img id="profilePhoto" src="" alt="Profile">
+    <span id="profileEmoji">👤</span>
+  </div>
+  <div class="profile-name" id="pName">Guest</div>
+  <div class="profile-email" id="pEmail">Not logged in</div>
+  <div class="profile-row"><span class="profile-row-label">BATCH</span><span class="profile-row-val">2023 – 2026</span></div>
+  <div class="profile-row"><span class="profile-row-label">DEPT</span><span class="profile-row-val">Computer Science</span></div>
+  <div class="profile-row"><span class="profile-row-label">STATUS</span><span class="profile-row-val" id="pStatus" style="color:#90ee90;">Active</span></div>
+  <button class="btn-logout" onclick="doLogout()">⇠ &nbsp; SIGN OUT</button>
+</div>
+
+<section id="home">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-badge">✦ &nbsp; COMPUTER SCIENCE DEPARTMENT &nbsp; ✦</div>
+  <div class="hero-title">UNIQUE SHINERS</div>
+  <div class="hero-sub">Forever Together</div>
+  <div class="hero-quote">"Not just classmates — we became a family. These three years changed us forever."</div>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num" data-target="68">0</span><span class="stat-label">STUDENTS</span></div>
+    <div class="stat"><span class="stat-num" data-target="36">0</span><span class="stat-label">BOYS</span></div>
+    <div class="stat"><span class="stat-num" data-target="32">0</span><span class="stat-label">GIRLS</span></div>
+    <div class="stat"><span class="stat-num" data-target="3">0</span><span class="stat-label">YEARS</span></div>
+  </div>
+  <div class="scroll-down" onclick="document.getElementById('names-section').scrollIntoView({behavior:'smooth'})">↓</div>
+</section>
+
+<section id="names-section">
+  <div class="section-header reveal">
+    <span class="section-badge">✦ OUR BATCH ✦</span>
+    <div class="section-title">All 68 Students</div>
+    <div class="section-divider"></div>
+  </div>
+  <div class="names-grid" id="namesGrid"></div>
+</section>
+<section id="staff">
+  <div class="section-header reveal">
+    <span class="section-badge">✦ OUR FACULTY ✦</span>
+    <div class="section-title">Our Guiding Stars</div>
+    <div class="section-divider"></div>
+  </div>
+  <div class="staff-showcase-grid" id="staffShowcaseGrid"></div>
+</section>
+
+<section id="gallery">
+  <div class="section-header reveal">
+    <span class="section-badge">✦ GALLERY ✦</span>
+    <div class="section-title">Our Memories</div>
+    <div class="section-divider"></div>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item reveal" style="animation-delay:.1s">
+      <img src="https://res.cloudinary.com/deatzzrsw/image/upload/v1774158752/1st_pongal_uym2hr.jpg" alt="First Pongal" loading="lazy" style="width:100%;height:100%;display:block;object-fit:fill;position:absolute;inset:0;">
+      <div class="gallery-overlay"><span class="gallery-label">First Pongal · 2023</span></div>
+    </div>
+    <div class="gallery-item reveal" style="animation-delay:.2s">
+      <img src="https://res.cloudinary.com/deatzzrsw/image/upload/v1773302273/IMG-20250111-WA0135_h561f6.jpg" alt="Pongal 2025" loading="lazy" style="width:100%;height:100%;display:block;object-fit:fill;position:absolute;inset:0;">
+      <div class="gallery-overlay"><span class="gallery-label">Pongal · 2025</span></div>
+    </div>
+    <div class="gallery-item reveal" style="animation-delay:.3s">
+      <img src="https://res.cloudinary.com/deatzzrsw/image/upload/v1773304356/IMG_20260110_112102_bvebrv.jpg" alt="Pongal 2K26" loading="lazy" style="width:100%;height:100%;display:block;object-fit:fill;position:absolute;inset:0;">
+      <div class="gallery-overlay"><span class="gallery-label">Pongal · 2K26</span></div>
+    </div>
+    <div class="gallery-item reveal" style="animation-delay:.4s">
+      <img src="https://res.cloudinary.com/deatzzrsw/image/upload/v1773293247/IV_GROUP_PHOTO_l9cukq.jpg" alt="IV 2K25" loading="lazy" style="width:100%;height:100%;display:block;object-fit:fill;position:absolute;inset:0;">
+      <div class="gallery-overlay"><span class="gallery-label">IV · 2K25</span></div>
+    </div>
+    <div class="gallery-item reveal" style="animation-delay:.5s">
+      <img src="https://res.cloudinary.com/deatzzrsw/image/upload/v1774158218/industrial_visit_nlqzac.jpg" alt="Convocation" loading="lazy" style="width:100%;height:100%;display:block;object-fit:fill;position:absolute;inset:0;">
+      <div class="gallery-overlay"><span class="gallery-label">Convocation · 2K25</span></div>
+    </div>
+   
+  </div>
+</section>
+
+<section id="videos">
+  <div class="section-header reveal">
+    <span class="section-badge">✦ VIDEOS ✦</span>
+    <div class="section-title">Watch & Relive</div>
+    <div class="section-divider"></div>
+  </div>
+  <div class="video-grid">
+    <div class="video-card reveal">
+      <div class="video-wrap">
+        <video src="https://res.cloudinary.com/deatzzrsw/video/upload/v1773294341/IV_BUS_OUTSIDE_DANCE_srlcjo.mp4" loop muted playsinline preload="none" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" onclick="this.paused?this.play():this.pause()"></video>
+      </div>
+      <div class="video-info"><div class="video-title">IV 2025</div><div class="video-sub">CS Department · 2025</div></div>
+    </div>
+    <div class="video-card reveal" style="animation-delay:.2s">
+      <div class="video-wrap">
+        <video src="https://res.cloudinary.com/deatzzrsw/video/upload/v1773301460/VID-20250111-WA0067_hg342c.mp4" loop muted playsinline preload="none" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" onclick="this.paused?this.play():this.pause()"></video>
+      </div>
+      <div class="video-info"><div class="video-title">Pongal Day 2024</div><div class="video-sub">CS Department · 2024</div></div>
+    </div>
+    <div class="video-card reveal" style="animation-delay:.3s">
+      <div class="video-wrap">
+        <video src="https://res.cloudinary.com/deatzzrsw/video/upload/v1773293306/IV_RIVER_PLACE_GROUP_VID_iydwud.mp4" loop muted playsinline preload="none" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" onclick="this.paused?this.play():this.pause()"></video>
+      </div>
+      <div class="video-info"><div class="video-title">IV 2026</div><div class="video-sub">CS Department · 2025</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="memories">
+  <div class="section-header reveal">
+    <span class="section-badge">✦ MEMORIES ✦</span>
+    <div class="section-title">Our Journey</div>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="memory-timeline">
+
+    <div class="memory-item reveal">
+      <div class="memory-dot"></div>
+      <div class="memory-card">
+        <div class="memory-year">Start College Journey </div>
+        <div class="memory-text">
+         We walked in as strangers in June 2023, not knowing these classrooms would turn into memories we’d carry forever.
+        </div>
+      </div>
+    </div>
+    <div class="memory-item reveal">
+      <div class="memory-dot"></div>
+      <div class="memory-card">
+        <div class="memory-year">JUNE 2023</div>
+        <div class="memory-text">
+          First day of college — one simple question, “Why don’t you use bad words?” started our first real conversation and broke the silence.
+        </div>
+      </div>
+    </div>
+
+    <div class="memory-item reveal" style="animation-delay:.1s">
+      <div class="memory-dot"></div>
+      <div class="memory-card">
+        <div class="memory-year">OCTOBER 2023</div>
+        <div class="memory-text">
+          Aayudha Pooja — our class celebrated louder than everyone, standing out in the entire college with pure energy and fun.
+        </div>
+      </div>
+    </div>
+
+    <div class="memory-item reveal" style="animation-delay:.2s">
+      <div class="memory-dot"></div>
+      <div class="memory-card">
+        <div class="memory-year">JANUARY 2024</div>
+        <div class="memory-text">
+          Pongal celebration — games, decorations, and full enjoyment in our block, making it one of the happiest days together.
+        </div>
+      </div>
+    </div>
+
+    <div class="memory-item reveal" style="animation-delay:.3s">
+      <div class="memory-dot"></div>
+      <div class="memory-card">
+        <div class="memory-year">JUNE 2024</div>
+        <div class="memory-text">
+          Promoted to second year — new confidence, new classroom, and a stronger bond as a batch.
+        </div>
+      </div>
+    </div>
+
+    <div class="memory-item reveal" style="animation-delay:.4s">
+      <div class="memory-dot"></div>
+      <div class="memory-card">
+        <div class="memory-year">OCTOBER 2024</div>
+        <div class="memory-text">
+          Aayudha Pooja — while others celebrated, we were stuck in the lab with 8085 practicals, watching from inside.
+        </div>
+      </div>
+    </div>
+
+    <div class="memory-item reveal" style="animation-delay:.5s">
+      <div class="memory-dot"></div>
+      <div class="memory-card">
+        <div class="memory-year">JANUARY 2025</div>
+        <div class="memory-text">
+          Pongal — our class stood out with unique outfits, grabbing everyone’s attention across the campus.
+        </div>
+      </div>
+    </div>
+
+    <div class="memory-item reveal" style="animation-delay:.6s">
+      <div class="memory-dot"></div>
+      <div class="memory-card">
+        <div class="memory-year">FEBRUARY 2025</div>
+        <div class="memory-text">
+          Annual Day — our class dance stole the show, and the entire college talked about our performance.
+        </div>
+      </div>
+    </div>
+
+    <div class="memory-item reveal" style="animation-delay:.7s">
+      <div class="memory-dot"></div>
+      <div class="memory-card">
+        <div class="memory-year">APRIL 2025</div>
+        <div class="memory-text">
+          Department function — food, fun, and speeches made it feel like a small festival in our department.
+        </div>
+      </div>
+    </div>
+
+    <div class="memory-item reveal" style="animation-delay:.8s">
+      <div class="memory-dot"></div>
+      <div class="memory-card">
+        <div class="memory-year">JUNE 2025</div>
+        <div class="memory-text">
+          Entered third year — stronger, more confident, and closer than ever as a batch.
+        </div>
+      </div>
+    </div>
+
+    <div class="memory-item reveal" style="animation-delay:.9s">
+      <div class="memory-dot"></div>
+      <div class="memory-card">
+        <div class="memory-year">JULY 2025</div>
+        <div class="memory-text">
+          Juniors joined — we became seniors, guiding them and feeling the responsibility for the first time.
+        </div>
+      </div>
+    </div>
+
+    <div class="memory-item reveal" style="animation-delay:1s">
+      <div class="memory-dot"></div>
+      <div class="memory-card">
+        <div class="memory-year">DECEMBER 2025</div>
+        <div class="memory-text">
+          Industrial Visit — a 3-day trip full of fun, but we missed the friends who couldn’t join in every moment.
+        </div>
+      </div>
+    </div>
+
+    <div class="memory-item reveal" style="animation-delay:1.1s">
+      <div class="memory-dot"></div>
+      <div class="memory-card">
+        <div class="memory-year">JANUARY 2026</div>
+        <div class="memory-text">
+          Final year began — new connections, more bonding, and a different feeling knowing this was our last phase.
+        </div>
+      </div>
+    </div>
+
+    <div class="memory-item reveal" style="animation-delay:1.2s">
+      <div class="memory-dot"></div>
+      <div class="memory-card">
+        <div class="memory-year">APRIL 13, 2026</div>
+        <div class="memory-text">
+          A day at a friend’s house — cooking, laughing, photos, and memories that turned into one unforgettable day.
+        </div>
+      </div>
+    </div>
+
+    <div class="memory-item reveal" style="animation-delay:1.3s">
+      <div class="memory-dot"></div>
+      <div class="memory-card">
+        <div class="memory-year">APRIL 2026</div>
+        <div class="memory-text">
+          Farewell — laughter, tears, and the last hug that said everything… this was the end.
+        </div>
+      </div>
+    </div>
+
+    <div class="memory-item reveal" style="animation-delay:1.4s">
+      <div class="memory-dot"></div>
+      <div class="memory-card">
+        <div class="memory-year">MAY 2026</div>
+        <div class="memory-text">
+          Final exams — CN, .NET, IoT, HCI, PHP… the last step before we walked out of college forever.
+        </div>
+      </div>
+    </div>
+
+    <div class="memory-item reveal" style="animation-delay:1.4s">
+      <div class="memory-dot"></div>
+      <div class="memory-card">
+        <div class="memory-year">Final version/ THE END!.....</div>
+        <div class="memory-text">
+         We didn’t realize these small moments were the best parts of our lives—until they became memories we can never return to.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── FEEDBACK ── -->
+<section id="feedback">
+  <div class="section-header reveal">
+    <span class="section-badge">✦ BATCH FEEDBACK ✦</span>
+    <div class="section-title">Your Voice Matters</div>
+    <div class="section-divider"></div>
+  </div>
+  <div class="feedback-wrap" style="max-width:780px;margin:0 auto;">
+
+    <!-- Response Counter -->
+    <div id="responseCounter" style="text-align:center;margin-bottom:20px;padding:12px;background:rgba(255,215,0,0.1);border-radius:30px;border:1px solid rgba(255,215,0,0.2);">
+      <span style="font-family:'Orbitron',monospace;font-size:0.7rem;letter-spacing:2px;color:var(--gold);">
+        📊 <span id="responseCount">0</span> / 76 MEMBERS RESPONDED
+      </span>
+    </div>
+
+    <!-- NOT LOGGED IN -->
+    <div id="fbLoginWarn" style="display:none;text-align:center;padding:40px;background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.15);border-radius:14px;">
+      <div style="font-size:2rem;margin-bottom:12px;">🔐</div>
+      <div style="color:rgba(255,255,255,0.55);font-size:0.95rem;line-height:1.8;">
+        Please <a href="login.html" style="color:var(--teal);">login</a> to fill the batch feedback.
+      </div>
+    </div>
+
+    <!-- ALREADY SUBMITTED -->
+    <div id="fbDone" style="display:none;text-align:center;padding:50px 20px;">
+      <div style="font-size:3.5rem;margin-bottom:16px;">✅</div>
+      <div style="font-family:'Cinzel Decorative',cursive;color:var(--gold);font-size:1.3rem;margin-bottom:10px;">Feedback Submitted!</div>
+      <div style="color:rgba(255,255,255,0.45);font-size:0.95rem;line-height:1.9;margin-bottom:24px;">Your answers are saved forever. Thank you! 💛</div>
+    </div>
+
+    <!-- QUIZ CARD -->
+    <div id="fbForm" style="display:none;">
+
+      <!-- Progress -->
+      <div style="margin-bottom:24px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px;align-items:center;">
+          <span style="font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:3px;color:rgba(255,215,0,0.55);">
+            QUESTION <span id="fbQNum">1</span> / <span id="fbQTotal">10</span>
+          </span>
+          <span id="fbStudentTag" style="font-family:'Cinzel Decorative',cursive;font-size:0.72rem;color:rgba(255,215,0,0.7);"></span>
+        </div>
+        <div style="width:100%;height:4px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;">
+          <div id="fbBar" style="height:100%;width:10%;background:linear-gradient(90deg,#ffd700,#ff8c00);border-radius:4px;transition:width 0.5s cubic-bezier(0.34,1.5,0.64,1);"></div>
+        </div>
+      </div>
+
+      <!-- Question card (NO FLOATING ANIMATION) -->
+      <div id="fbCard" style="
+        background:linear-gradient(145deg,rgba(13,13,36,0.95),rgba(10,10,30,0.98));
+        border:1px solid rgba(255,215,0,0.18);
+        border-radius:20px;
+        padding:clamp(24px,4vw,40px);
+        margin-bottom:20px;
+        box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 0 1px rgba(255,215,0,0.06);
+        transition:all 0.4s ease;
+        min-height:220px;
+        display:flex;flex-direction:column;gap:20px;
+      ">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
+          <div id="fbQBadge" style="
+            font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:3px;
+            color:#000;background:linear-gradient(135deg,#ffd700,#ff8c00);
+            padding:4px 14px;border-radius:20px;flex-shrink:0;
+          ">Q1</div>
+          <div style="height:1px;flex:1;background:linear-gradient(90deg,rgba(255,215,0,0.3),transparent);"></div>
+        </div>
+        <div id="fbQuestion" style="
+          font-size:clamp(1rem,2.5vw,1.3rem);
+          line-height:1.85;
+          color:rgba(255,255,255,0.88);
+          font-style:italic;
+          font-family:'Cormorant Garamond',serif;
+        "></div>
+        <textarea id="fbAnswer"
+          placeholder="Write your answer here... (Ctrl+Enter to go next)"
+          style="
+            width:100%;height:110px;resize:none;
+            background:rgba(255,255,255,0.04);
+            border:1px solid rgba(255,255,255,0.1);
+            border-radius:12px;padding:14px 16px;
+            color:#fff;font-family:'Cormorant Garamond',serif;
+            font-size:1rem;line-height:1.7;outline:none;
+            transition:border-color 0.3s;
+          "
+          onfocus="this.style.borderColor='rgba(255,215,0,0.4)'"
+          onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
+          onkeydown="if(event.ctrlKey&&event.key==='Enter')nextFbQ()"
+        ></textarea>
+
+        <!-- Saving indicator -->
+        <div id="fbSaving" style="display:none;font-family:'Orbitron',monospace;font-size:0.58rem;letter-spacing:3px;color:rgba(0,212,255,0.7);text-align:right;">
+          💾 SAVING...
+        </div>
+        <div id="fbSaved" style="display:none;font-family:'Orbitron',monospace;font-size:0.58rem;letter-spacing:3px;color:rgba(0,255,120,0.7);text-align:right;">
+          ✅ SAVED
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div style="display:flex;gap:12px;">
+        <button id="fbPrev" onclick="prevFbQ()"
+          style="display:none;padding:13px 22px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:rgba(255,255,255,0.4);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;cursor:pointer;transition:all .3s;">
+          ← PREV
+        </button>
+        <button id="fbNext" onclick="nextFbQ()"
+          style="flex:1;padding:15px;background:linear-gradient(135deg,#ffd700,#ff8c00);border:none;border-radius:12px;font-family:'Cinzel Decorative',cursive;font-size:0.95rem;letter-spacing:2px;color:#000;cursor:pointer;transition:all .3s;box-shadow:0 4px 20px rgba(255,215,0,0.25);">
+          NEXT →
+        </button>
+        <button id="fbSubmit" onclick="submitFbAll()"
+          style="display:none;flex:1;padding:15px;background:linear-gradient(135deg,#00d4ff,#0055cc);border:none;border-radius:12px;font-family:'Cinzel Decorative',cursive;font-size:0.95rem;letter-spacing:2px;color:#000;cursor:pointer;transition:all .3s;box-shadow:0 4px 20px rgba(0,212,255,0.25);">
+          💛 SUBMIT ALL
+        </button>
+      </div>
+    </div>
+
+    <!-- RESPONSES FEED -->
+    <div id="fbFeed" style="margin-top:70px;display:none;">
+      <div style="text-align:center;margin-bottom:36px;">
+        <div style="font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:5px;color:var(--teal);margin-bottom:8px;">✦ LIVE RESPONSES ✦</div>
+        <div style="font-family:'Cinzel Decorative',cursive;font-size:clamp(1.1rem,3vw,1.8rem);background:linear-gradient(135deg,#ffd700,#ff8c00);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;">Batch Voices</div>
+        <div style="width:80px;height:2px;background:linear-gradient(90deg,transparent,#ffd700,transparent);margin:12px auto 20px;"></div>
+        <div style="font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:3px;color:rgba(255,215,0,0.5);">
+          <span id="fbCount">0</span> ANSWERS COLLECTED
+        </div>
+      </div>
+
+      <!-- 3-column card grid -->
+      <div id="fbFeedGrid" style="
+        display:grid;
+        grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+        gap:20px;
+        max-width:1200px;
+        margin:0 auto;
+        padding:8px 4px;
+      "></div>
+      <style>
+        @media(max-width:900px){#fbFeedGrid{grid-template-columns:repeat(2,1fr);}}
+        @media(max-width:560px){#fbFeedGrid{grid-template-columns:1fr;}}
+        .fb-response-card{ height:fit-content; }
+      </style>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── FEEDBACK CSS (NO FLOATING ANIMATION) ── -->
+<style>
+@keyframes fbCardFlip {
+  0%   { opacity:0; transform:perspective(800px) rotateY(-90deg) scale(0.85); }
+  60%  { opacity:1; transform:perspective(800px) rotateY(8deg) scale(1.02); }
+  100% { opacity:1; transform:perspective(800px) rotateY(0deg) scale(1); }
+}
+@keyframes fbSlideQ {
+  from { opacity:0; transform:translateX(40px) scale(0.97); }
+  to   { opacity:1; transform:translateX(0) scale(1); }
+}
+.fb-response-card {
+  animation: fbCardFlip 0.65s cubic-bezier(0.22,1,0.36,1) both;
+}
+#fbFeedGrid::-webkit-scrollbar { width:4px; }
+#fbFeedGrid::-webkit-scrollbar-track { background:transparent; }
+#fbFeedGrid::-webkit-scrollbar-thumb { background:rgba(255,215,0,0.25);border-radius:2px; }
+</style>
+
+<script src="student-profile.js"></script>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDT_dWHb6OuujWXpYEv-FRV48F9kDqsHFE",
+  authDomain: "email-93402.firebaseapp.com",
+  projectId: "email-93402",
+  storageBucket: "email-93402.firebasestorage.app",
+  messagingSenderId: "306356848557",
+  appId: "1:306356848557:web:4bc7cdfd614aa5542d8324"
+};
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const studentNames = {
+"kabilanaarakan@gmail.com":"ABISEK KUMAR",
+"aadheeshwark@gmail.com":"ADHEESHWAR",
+"alag123arasan@gmail.com":"ALAGARASAN",
+"masterbhrth@gmail.com":"BHARATHKUMAR",
+"boobalanbn24@gmail.com":"BOOBALAN",
+"dharshan130206@gmail.com":"DHARSHAN",
+"sridharunkumar@gmail.com":"DHARUNKUMAR",
+"dinesh14006@gmail.com":"DINESH KUMAR",
+"dgowrishankar81@gmail.com":"GOWRISHANKAR",
+"20gowtham06@gmail.com":"GOWTHAM",
+"jagathesh45891@gmail.com":"JAGATHESH",
+"jaijaikanth873@gmail.com":"JAIKANTH",
+"karanrajkanagaraj148@gmail.com":"KARANRAJ",
+"karthikarthiperiyasamy@gmail.com":"KARTHICKRAJA",
+"monishram002@gmail.com":"MONISHRAM",
+"nandha456kumar@gmail.com":"NANDHAKUMAR",
+"nithish.nst@gmail.com":"NITHISH",
+"massajith601@gmail.com":"PERIYANNAN",
+"prakash9342244019@gmail.com":"PRAKASH RAJ",
+"prasanna202k@gmail.com":"PRASANNA K",
+"pravinmanoj200022006@gmail.com":"PRAVINKUMAR",
+"rajasanthi0709@gmail.com":"RAJA",
+"rathnavel829@gmail.com":"RATHINAVEL",
+"sarravanakumarmariappan@gmail.com":"RITHISH ABINAV",
+"sanjai9487771308@gmail.com":"SANJAI",
+"gksaran985@gmail.com":"SARAN",
+"saravanansekar005@gmail.com":"SARAVANAN",
+"shandrua2005@gmail.com":"SHANDRU",
+"duraisamyvrr@gmail.com":"SUBASH",
+"sundharkgf@gmail.com":"SUNDHARESAN",
+"tamilmani9361934449@gmail.com":"TAMILMANI",
+"thirutm80@gmail.com":"THIRUMALAI",
+"vetrimurugavel2006@gmail.com":"VETRIVEL",
+"vigneshvinesh2005@gmail.com":"VIGNESH",
+"sureshvijaya2005@gmail.com":"ANUSUYA",
+"deepikap18062006@gmail.com":"DEEPIKA",
+"www.dharshinidharshini2007@gmail.com":"DHARSHINI",
+"kumarmbks12345@gmail.com":"DIVYA",
+"gopikav032005@gmail.com":"GOPIKA",
+"vsaker52@gmail.com":"HARINI",
+"jamunaselvakumar9080@gmail.com":"JAMUNA",
+"j9898757@gmail.com":"JANANI",
+"alexjames21857@gmail.com":"JASMINE PRINCY",
+"jeevajothirjothi678@gmail.com":"JEEVAJOTHI",
+"kanmaninatesan205@gmail.com":"KANMANI",
+"kannankrishnaveni667@gmail.com":"KRISHNAVENI",
+"mathumithakanagaraj58@gmail.com":"MAHESWARI",
+"manishaa24112005@gmail.com":"MANISHAA",
+"monikav28072006@gmail.com":"MONIKA",
+"senthilkumarkarthika007@gmail.com":"NAVYA",
+"pavibpavi466@gmail.com":"PAVITHRA",
+"prasannasbsc@gmail.com":"PRASANNA S",
+"rakshitharathinam2006@gmail.com":"RAKSHITHA",
+"sandhiyasureshkumar273@gmail.com":"SANDHIYA",
+"sangeethakannan8489@gmail.com":"SANGEETHA",
+"sangeethavanic986519@gmail.com":"SANGEETHAVANI",
+"saranyas052006@gmail.com":"SARANYA",
+"sathyasaminathan624@gmail.com":"SATHYA",
+"msowmiya987@gmail.com":"SOWMIYA 👀",
+"sowmiyavishnu869@gmail.com":"SOWMIYA 😻",
+"vishnumuthuupm1978@gmail.com":"SWATHI",
+"thirishac9@gmail.com":"THIRISHA",
+"vasanthishivan2006@gmail.com":"VASANTHI",
+"gramrasi@gmail.com":"RAM KUMAR",
+"snadhiya10062006@gmail.com":"NADHIYA"
+};
+window.STUDENT_EMAIL_ORDER = Object.keys(studentNames);
+
+const studentPhotos = window.STUDENT_PHOTOS || {};
+
+function updateProfileWithName(email) {
+  const normalizedEmail = (email || '').toLowerCase().trim();
+  const displayName = studentNames[normalizedEmail] || normalizedEmail.split('@')[0].toUpperCase().replace(/[._]/g,' ');
+  document.getElementById('pName').textContent = displayName;
+  document.getElementById('pEmail').textContent = normalizedEmail;
+  localStorage.setItem('studentName', displayName);
+  renderProfileBadge('profileBtn', normalizedEmail, displayName);
+  const photoUrl = (window.getStudentPhoto ? window.getStudentPhoto(normalizedEmail) : studentPhotos[normalizedEmail]) || '';
+  const profileImg = document.getElementById('profilePhoto');
+  const profileEmoji = document.getElementById('profileEmoji');
+  if(photoUrl){
+    profileImg.src = photoUrl;
+    profileImg.style.display = 'block';
+    if(profileEmoji) profileEmoji.style.display = 'none';
+  } else {
+    profileImg.style.display = 'none';
+    if(profileEmoji) profileEmoji.style.display = 'block';
+  }
+}
+
+
+function getStudentName(email) {
+  return studentNames[email] || email.split('@')[0].toUpperCase().replace(/[._]/g,' ');
+}
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    const name = getStudentName(user.email);
+    const email = (user.email || '').toLowerCase().trim();
+    localStorage.setItem('loggedEmail', email);
+    localStorage.setItem('studentName', name);
+
+    // Update profile modal
+    updateProfileWithName(email);
+    document.getElementById('pStatus').textContent = 'Active';
+
+    // Init feedback
+    if (typeof initBatchFeedback === 'function') {
+      initBatchFeedback(email, name);
+    }
+  } else {
+    localStorage.removeItem('loggedEmail');
+    localStorage.removeItem('studentName');
+    document.getElementById('pName').textContent  = 'Guest';
+    document.getElementById('pEmail').textContent = 'Not logged in';
+    renderProfileBadge('profileBtn');
+
+    // Show login warning in feedback
+    const warn = document.getElementById('fbLoginWarn');
+    if (warn) warn.style.display = 'block';
+    const form = document.getElementById('fbForm');
+    if (form) form.style.display = 'none';
+    const done = document.getElementById('fbDone');
+    if (done) done.style.display = 'none';
+  }
+});
+
+window.doLogout = async () => {
+  await signOut(auth);
+  localStorage.removeItem('loggedEmail');
+  localStorage.removeItem('studentName');
+  window.location.href = 'login.html';
+};
+</script>
+
+<!-- ── STUDENT QUESTIONS MAPPING ── -->
+<script>
+const QUESTION_POOL = (() => {
+  const seeds = [
+    "What is your most unforgettable memory from this batch? 💭",
+    "Who is the funniest person in the batch and why? 😂",
+    "If you could relive one day from these 3 years, which day would it be? 📅",
+    "What is one thing you learned from your batchmates that no textbook could teach? 📚",
+    "Which moment made you most proud to be part of CS-Journey-Legends-2K23-2K26? 🏆",
+    "If you could write one sentence about this batch in history, what would it say? ✍️",
+    "Who do you think will be most successful in 10 years and why? 🚀",
+    "What is the one thing you will miss most about this class? 💔",
+    "Describe this batch in exactly 3 words. 🎯",
+    "What advice would you give to your first-year self? 🕐",
+    "Which class event or trip was your absolute favourite? 🌟",
+    "What is something you wish you had done more in these 3 years? 🤔",
+    "Write a short message to the entire batch. 💌",
+    "What song best describes your journey with this batch? 🎵",
+    "How has this batch changed you as a person? ❤️",
+    "Who quietly supported the batch most and how? 🤝",
+    "What classroom moment still makes you smile instantly? 😄",
+    "Which friend pushed you to improve the most? 🔥",
+    "What is one tradition of this batch that should never end? ✨",
+    "If this batch was a movie, what would the title be? 🎬",
+    "Which day felt most emotional in your college life? 🫶",
+    "What did this batch teach you about teamwork? 🧠",
+    "What message would you leave for juniors from our batch? 📢",
+    "Which teacher's advice stayed with you the longest? 📌",
+    "What unexpected friendship changed your life here? 🌈",
+    "What memory should every class preserve forever? 📸",
+    "Which batch challenge made us stronger together? 💪",
+    "What is your proudest personal achievement in these years? 🥇",
+    "What small moment became a big memory for you? 🕯️",
+    "What one promise should our batch keep after graduation? 🤍",
+    "Which conversation in class changed your thinking? 💡",
+    "What will you thank this batch for, forever? 🙏",
+    "What was your happiest attendance day and why? 📘",
+    "Which lab or project day was unforgettable? 💻",
+    "What does friendship mean after these three years? 🌻"
+  ];
+
+  const tones = [
+    "Answer in one line.",
+    "Share honestly.",
+    "Add a specific name or moment.",
+    "Write from the heart.",
+    "Keep it meaningful.",
+    "Give one practical example.",
+    "Use simple words.",
+    "Be creative.",
+    "Keep it short and clear.",
+    "Include one emotion."
+  ];
+
+  const pool = [];
+  for (let i = 0; i < 700; i++) {
+    const base = seeds[i % seeds.length];
+    const tone = tones[i % tones.length];
+    pool.push(`${i + 1}. ${base} ${tone}`);
+  }
+  return pool;
+})();
+
+function getQuestionsForStudent(email) {
+  const monikaEmail = 'monikav28072006@gmail.com';
+  const normalizedEmail = (email || '').toLowerCase().trim();
+  if (normalizedEmail === monikaEmail) {
+    return [
+      'What was your first impression of our class on the first day?',
+      'What makes our batch special compared to other departments?',
+      'How would you describe the energy and vibe of our classroom?',
+      'What is the best quality of the boys in our class?',
+      'What is the best quality of the girls in our class?',
+      'How did our class support each other during exams, projects, or events?',
+      'What is one funny or chaotic moment everyone in our class remembers?',
+      'What is one moment that made you feel proud of our batch?',
+      'What role do you think friendship played in our college life?',
+      'If someone asks about our class, what one sentence would you say about us?',
+      'What three words best describe our batch?',
+      'What is something unique about our class culture or habits?',
+      'Which event or day best represents our batch spirit?',
+      'What will you miss the most about our class after college?',
+      'Write one short message to the CS-Journey-Legends-2K23-2K26 batch.',
+      'How would you describe our batch in one or two sentences?',
+      'Write one line message for our batch that will stay forever?'
+    ];
+  }
+
+  const emails = (window.STUDENT_EMAIL_ORDER || []).slice();
+  const qCount = 10;
+  if (!emails.length) return QUESTION_POOL.slice(0, qCount);
+
+  let idx = emails.indexOf(email);
+  if (idx === -1) {
+    let h = 0;
+    for (let i = 0; i < email.length; i++) h = ((h << 5) - h + email.charCodeAt(i)) | 0;
+    idx = Math.abs(h) % Math.max(1, Math.floor(QUESTION_POOL.length / qCount));
+  }
+
+  const start = idx * qCount;
+  const end = start + qCount;
+  if (end <= QUESTION_POOL.length) return QUESTION_POOL.slice(start, end);
+
+  const safeStart = Math.max(0, QUESTION_POOL.length - qCount);
+  return QUESTION_POOL.slice(safeStart, safeStart + qCount);
+}
+</script>
+
+<!-- ── BATCH FEEDBACK JS ── -->
+<script>
+(function(){
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbysykl1huD2RLhSolwijcd11v8mwOwoY69isq3beuyG-DdZOSmSkK7EOf1Q55b-pRTtjg/exec';
+
+  let fbName = '', fbEmail = '', fbIdx = 0, fbQuestions = [];
+  let fbQTotal = 10;
+  let fbAns = [];
+  let saveBusy = false;
+  let fbCache = [];
+  let refreshBusy = false;
+
+  function normalizeRows(payload) {
+    if (Array.isArray(payload)) return payload;
+    if (!payload || typeof payload !== 'object') return [];
+    if (Array.isArray(payload.rows)) return payload.rows;
+    if (Array.isArray(payload.data)) return payload.data;
+    if (Array.isArray(payload.items)) return payload.items;
+    return [];
+  }
+
+  function normalizeRow(row) {
+    const get = (...keys) => {
+      for (const k of keys) {
+        if (row[k] !== undefined && row[k] !== null && row[k] !== '') return row[k];
+      }
+      return '';
+    };
+
+    return {
+      created_at: get('created_at', 'timestamp', 'time', 'date', 'created at', 'col_0') || new Date().toISOString(),
+      student_name: get('student_name', 'studentName', 'student name', 'name', 'col_1'),
+      student_email: get('student_email', 'studentEmail', 'student email', 'email', 'col_2'),
+      question_number: Number(get('question_number', 'questionNumber', 'q_no', 'qno', 'q number', 'col_3') || 0),
+      question_text: get('question_text', 'questionText', 'question', 'col_4'),
+      answer: get('answer', 'response', 'col_5')
+    };
+  }
+
+  async function gsInsert(row) {
+    const payload = new URLSearchParams();
+    payload.set('action', 'submit');
+    payload.set('timestamp', row.created_at || new Date().toISOString());
+    payload.set('student_name', row.student_name || '');
+    payload.set('student_email', row.student_email || '');
+    payload.set('question_number', String(row.question_number || ''));
+    payload.set('question_text', row.question_text || '');
+    payload.set('answer', row.answer || '');
+
+    // Alias keys for broader Apps Script compatibility.
+    payload.set('studentName', row.student_name || '');
+    payload.set('studentEmail', row.student_email || '');
+    payload.set('qNumber', String(row.question_number || ''));
+    payload.set('question', row.question_text || '');
+
+    // no-cors prevents browser CORS failures for Apps Script endpoints.
+    await fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+      body: payload.toString()
+    });
+
+    return true;
+  }
+
+  async function gsRead() {
+    // Local-hosted fallback: avoid CORS/JSONP errors when the sheet endpoint
+    // is not publicly readable from the browser. Submitted answers still save
+    // via Apps Script, and the UI shows the local cache/optimistic updates.
+    return fbCache.slice();
+  }
+
+  async function updateResponseCount(data) {
+    const rows = Array.isArray(data) ? data : await gsRead();
+    const uniqueStudents = new Set(rows.map(r => (r.student_email || '').toLowerCase()));
+    const count = uniqueStudents.size;
+    const counterEl = document.getElementById('responseCount');
+    if (counterEl) counterEl.textContent = count;
+  }
+
+  async function refreshFeed() {
+    if (refreshBusy) return;
+    refreshBusy = true;
+    try {
+      const rows = await gsRead();
+      if (rows.length) fbCache = rows;
+      loadFbFeed(fbCache);
+      await updateResponseCount(fbCache);
+    } finally {
+      refreshBusy = false;
+    }
+  }
+
+  window.initBatchFeedback = async function(email, name) {
+    fbEmail = email;
+    fbName = name;
+    fbQuestions = getQuestionsForStudent(email);
+    fbQTotal = fbQuestions.length || 10;
+    fbAns = new Array(fbQTotal).fill('');
+    
+    document.getElementById('fbLoginWarn').style.display = 'none';
+    document.getElementById('fbStudentTag').textContent = name;
+    document.getElementById('fbQTotal').textContent = fbQTotal;
+
+    const existing = await gsRead();
+    fbCache = existing;
+    const mine = existing.filter(r => (r.student_email || '').toLowerCase() === (email || '').toLowerCase());
+    await updateResponseCount(existing);
+
+    if (mine.length >= fbQTotal) {
+      document.getElementById('fbDone').style.display = 'block';
+    } else {
+      mine.forEach(r => {
+        const i = (r.question_number || 1) - 1;
+        if (i >= 0 && i < fbQTotal) fbAns[i] = r.answer || '';
+      });
+      fbIdx = mine.length;
+      document.getElementById('fbForm').style.display = 'block';
+      showFbQ(fbIdx);
+    }
+    loadFbFeed(existing);
+  };
+
+  window.showFbQ = function(idx) {
+    fbIdx = idx;
+    const card = document.getElementById('fbCard');
+    card.style.animation = 'none';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        card.style.animation = `fbSlideQ 0.4s ease both`;
+      });
+    });
+
+    document.getElementById('fbQNum').textContent = idx + 1;
+    document.getElementById('fbQTotal').textContent = fbQTotal;
+    document.getElementById('fbQBadge').textContent = 'Q' + (idx + 1);
+    document.getElementById('fbQuestion').textContent = fbQuestions[idx];
+    document.getElementById('fbAnswer').value = fbAns[idx] || '';
+    document.getElementById('fbBar').style.width = ((idx + 1) / fbQTotal * 100) + '%';
+    document.getElementById('fbSaving').style.display = 'none';
+    document.getElementById('fbSaved').style.display = 'none';
+
+    document.getElementById('fbPrev').style.display = idx > 0 ? 'block' : 'none';
+    document.getElementById('fbNext').style.display = idx < (fbQTotal - 1) ? 'flex' : 'none';
+    document.getElementById('fbSubmit').style.display = idx === (fbQTotal - 1) ? 'flex' : 'none';
+
+    // setTimeout(() => document.getElementById('fbAnswer').focus(), 300);
+  };
+
+  window.nextFbQ = async function() {
+    if (saveBusy) return;
+    const ans = document.getElementById('fbAnswer').value.trim();
+    if (!ans) { showToast('Please write an answer ✏️', 'error'); return; }
+    fbAns[fbIdx] = ans;
+    await saveAnswer(fbIdx, ans);
+    if (fbIdx < (fbQTotal - 1)) showFbQ(fbIdx + 1);
+  };
+
+  window.prevFbQ = function() {
+    fbAns[fbIdx] = document.getElementById('fbAnswer').value.trim();
+    showFbQ(fbIdx - 1);
+  };
+
+  async function saveAnswer(idx, ans) {
+    if (saveBusy) return;
+    saveBusy = true;
+    document.getElementById('fbSaving').style.display = 'block';
+    document.getElementById('fbSaved').style.display = 'none';
+    try {
+      const ok = await gsInsert({
+        created_at: new Date().toISOString(),
+        student_name: fbName,
+        student_email: fbEmail,
+        question_number: idx + 1,
+        question_text: fbQuestions[idx],
+        answer: ans
+      });
+      if (!ok) {
+        showToast('Save failed. Check internet and retry.', 'error');
+      } else {
+        // Instant optimistic update for faster UI on slow Sheets sync.
+        const savedRow = {
+          created_at: new Date().toISOString(),
+          student_name: fbName,
+          student_email: fbEmail,
+          question_number: idx + 1,
+          question_text: fbQuestions[idx],
+          answer: ans
+        };
+        fbCache = [savedRow, ...fbCache];
+        loadFbFeed(fbCache);
+        await updateResponseCount(fbCache);
+
+        // Async background sync to confirm global data.
+        setTimeout(() => { refreshFeed(); }, 700);
+
+        document.getElementById('fbSaved').style.display = 'block';
+        setTimeout(() => { document.getElementById('fbSaved').style.display = 'none'; }, 1500);
+      }
+    } catch {
+      showToast('Network error while saving.', 'error');
+    } finally {
+      document.getElementById('fbSaving').style.display = 'none';
+      saveBusy = false;
+    }
+  }
+
+  window.submitFbAll = async function() {
+    const ans = document.getElementById('fbAnswer').value.trim();
+    if (!ans) { showToast('Please answer the last question ✏️', 'error'); return; }
+    const lastIdx = fbQTotal - 1;
+    fbAns[lastIdx] = ans;
+    await saveAnswer(lastIdx, ans);
+
+    document.getElementById('fbForm').style.display = 'none';
+    document.getElementById('fbDone').style.display = 'block';
+    showToast(`💛 All ${fbQTotal} answers saved!`);
+
+    await refreshFeed();
+  };
+
+  async function loadFbFeed(data) {
+    if (!data) data = await gsRead();
+    const feed = document.getElementById('fbFeedGrid');
+    const countEl = document.getElementById('fbCount');
+    document.getElementById('fbFeed').style.display = 'block';
+    feed.innerHTML = '';
+
+    const COLS = [
+      {hex:'#ffd700', rgba:'255,215,0'}, {hex:'#00d4ff', rgba:'0,212,255'},
+      {hex:'#ff6b9d', rgba:'255,107,157'}, {hex:'#90ee90', rgba:'144,238,144'},
+      {hex:'#ff8c00', rgba:'255,140,0'}, {hex:'#bf7fff', rgba:'191,127,255'},
+      {hex:'#ff4444', rgba:'255,68,68'}, {hex:'#00ffcc', rgba:'0,255,204'},
+      {hex:'#ffdd44', rgba:'255,221,68'}, {hex:'#4488ff', rgba:'68,136,255'},
+      {hex:'#ff66cc', rgba:'255,102,204'}, {hex:'#aaffaa', rgba:'170,255,170'}
+    ];
+
+    const colorForStudent = (email) => {
+      const key = (email || '').toLowerCase();
+      let h = 0;
+      for (let i = 0; i < key.length; i++) h = ((h << 5) - h + key.charCodeAt(i)) | 0;
+      return Math.abs(h) % COLS.length;
+    };
+
+    const sorted = [...data].sort((a,b)=>new Date(b.created_at || b.timestamp || 0)-new Date(a.created_at || a.timestamp || 0));
+    countEl.textContent = sorted.length;
+
+    sorted.forEach((row, idx) => {
+      const colorIdx = colorForStudent(row.student_email);
+      const cc = COLS[colorIdx];
+      const col = cc.hex;
+      const colR = cc.rgba;
+      const dt = new Date(row.created_at || row.timestamp || Date.now());
+      const dateStr = dt.toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'});
+
+      const card = document.createElement('div');
+      card.className = 'fb-response-card';
+      card.style.cssText = `
+        background:linear-gradient(145deg,rgba(10,10,28,0.97),rgba(6,6,18,0.99));
+        border:2px solid rgba(${colR},0.28);
+        border-radius:16px;
+        padding:18px 20px;
+        box-shadow:0 6px 28px rgba(${colR},0.14);
+        cursor:default;
+        transition:border-color 0.3s,box-shadow 0.3s,transform 0.3s;
+      `;
+      card.onmouseenter = ()=>{
+        card.style.borderColor=`rgba(${colR},0.65)`;
+        card.style.boxShadow=`0 14px 44px rgba(${colR},0.28)`;
+        card.style.transform='translateY(-4px)';
+      };
+      card.onmouseleave = ()=>{
+        card.style.borderColor=`rgba(${colR},0.28)`;
+        card.style.boxShadow=`0 6px 28px rgba(${colR},0.14)`;
+        card.style.transform='';
+      };
+
+      card.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:8px;flex-wrap:wrap;">
+          <div style="font-family:'Cinzel Decorative',cursive;font-size:clamp(1rem,3vw,1.15rem); color:${col};text-shadow:0 0 18px ${col}66;line-height:1.3;font-weight:900;">${row.student_name}</div>
+          <div style="font-family:'Orbitron',monospace;font-size:clamp(0.6rem,2vw,0.7rem);letter-spacing:2px; color:${col};background:rgba(${colR},0.12);border:1px solid rgba(${colR},0.4); padding:4px 12px;border-radius:20px;white-space:nowrap;flex-shrink:0;">Q${row.question_number}</div>
+        </div>
+        <div style="font-family:'Orbitron',monospace;font-size:clamp(0.65rem,2vw,0.72rem); letter-spacing:1px;color:${col};opacity:0.85;line-height:1.7;margin-bottom:10px;">${row.question_text || ''}</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.05rem,3vw,1.2rem); color:#ffffff;font-style:italic;line-height:1.8; border-left:3px solid ${col};padding-left:14px;margin-bottom:12px;">"${row.answer}"</div>
+        <div style="font-family:'Orbitron',monospace;font-size:clamp(0.58rem,1.5vw,0.62rem); letter-spacing:1.5px;color:rgba(255,255,255,0.35);text-align:right;">🕐 ${dateStr}</div>
+      `;
+      feed.appendChild(card);
+    });
+
+    if(sorted.length === 0){
+      feed.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:rgba(255,255,255,0.25);font-family:Orbitron,monospace;font-size:0.65rem;letter-spacing:3px;">NO RESPONSES YET</div>';
+    }
+  }
+
+  setInterval(async () => {
+    if (document.getElementById('fbFeed').style.display !== 'none') {
+      await refreshFeed();
+    }
+  }, 10000);
+
+  window.updateResponseCount = updateResponseCount;
+})();
+</script>
+
+<!-- ── CONTACT CARDS (LANDSCAPE) ── -->
+<section id="contact">
+  <div class="contact-cards-container">
+    <div class="section-header reveal">
+      <span class="section-badge">✦ CONTACT ✦</span>
+      <div class="section-title">Get in Touch</div>
+      <div class="section-divider"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card reveal">
+        <span class="contact-icon">🏫</span>
+        <div class="contact-name">DEPARTMENT</div>
+        <div class="contact-detail">Computer Science<br>2023 – 2026 Batch</div>
+      </div>
+      <div class="contact-card reveal" style="animation-delay:.1s">
+        <span class="contact-icon">📧</span>
+        <div class="contact-name">EMAIL</div>
+        <div class="contact-detail">cs2026batch@email.com</div>
+      </div>
+      <div class="contact-card reveal" style="animation-delay:.2s">
+        <span class="contact-icon">📱</span>
+        <div class="contact-name">WHATSAPP GROUP</div>
+        <div class="contact-detail">CS-Journey-Legends-2K23-2K26 Batch Group</div>
+      </div>
+      <div class="contact-card reveal" style="animation-delay:.3s">
+        <span class="contact-icon">📍</span>
+        <div class="contact-name">LOCATION</div>
+        <div class="contact-detail">Your College Name<br>Tamil Nadu, India</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-title">CS-Journey-Legends-2K23-2K26 BATCH</div>
+  <div class="footer-sub">68 Students · One Family · Forever Memories ✦</div>
+</footer>
+
+<!-- Footer Credit - Bottom Right -->
+<div class="footer-credit">
+  <a href="https://ardinfotech03-debug.github.io/ARD-Infotech/" target="_blank">Designed by ARD InfoTech</a>
+</div>
+
+<!-- Hidden audio -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="https://res.cloudinary.com/dilsx2np3/video/upload/q_auto/f_auto/v1776585591/Ore-Oru-Ooril_1_qyxgwc.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* ── STUDENT DATA ── */
+const boys=[
+  "ABISEKKUMAR","ADHESHWARAN","ALAGARASAN","BOOBALAN","BHARATHKUMAR",
+  "DHARSHAN","DHARUN KUMAR","DINESH KUMAR","GOWRI SHANKAR","GOWTHAM",
+  "JAGADHESH","JAIKANTH","KARAN RAJ","KARTHICKRAJA","MONISHRAM",
+  "NANDHAKUMAR","NITHISH","PERIYANNAN","PRAKSHRAJ","PRASANA",
+  "PRAVINKUMAR","RAJA","RANJITH","RATHINAVEL","RITHIS ABINAV",
+  "SANJAI","SARAN","SARAVANAN","SHANDRU","SUBASH",
+  "SUNDHERESAN","TAMILMANI","THIRUMALAI","VETRIVEL","VIGNESH"
+];
+const girls=[
+  "ANUSUYA","DEEPIKA","DHARSHINI","DHIVYA","GOPIKA","HARINI",
+  "JAMUNA","JANANI","JASMINE PRINCY","JEEVAJOTHI","KANMANI","KANUSHKA",
+  "KRISHNAVENI","MAHESWARI","MANISHA","MONIKA","NADHIYA","NAVYA",
+  "PAVITHRA","PRARTHANA","PRASANNA","RAKSHITHA","RIDHUVARSHA",
+  "SANDHIYA","SATHYA","SANGEETHA","SANGEETHAVANI","SARANYA","SOWMIYA 👀",
+  "SOWMIYA 😻","SWATHI","TRISHA","VASANTHI"
+];
+const STAFF_DATA=[
+  {name:"Mr G Ram Kumar",year:"2023 - 2026",designation:"HOD",photo:"",avatar:"👨‍🏫",theme:"sc-t1"},
+  {name:"Mr G Saithsh Kumar",year:"2025 - 2026",designation:"Assistant Professor",photo:"",avatar:"👨‍🏫",theme:"sc-t2"},
+  {name:"Mrs Kavitha",year:"2025 - 2026",designation:"Assistant Professor",photo:"",avatar:"👩‍🏫",theme:"sc-t3"},
+  {name:"Mrs Samya",year:"2025 - 2026",designation:"Assistant Professor",photo:"",avatar:"👩‍🏫",theme:"sc-t4"},
+  {name:"Mr Srinivasan",year:"2024 - 2026",designation:"Assistant Professor",photo:"",avatar:"👨‍🏫",theme:"sc-t5"},
+  {name:"Mrs Sivasangari",year:"2024 - 2026",designation:"Assistant Professor",photo:"",avatar:"👩‍🏫",theme:"sc-t6"},
+  {name:"Mrs Nagarani",year:"2024 - 2026",designation:"Lab Assistant",photo:"",avatar:"🧑‍🔬",theme:"sc-t7"},
+  {name:"Mrs Mythili",year:"2023 - 2025",designation:"Assistant Professor",photo:"",avatar:"👩‍🏫",theme:"sc-t8"},
+  {name:"Mrs Nadhiya",year:"2024 - 2026",designation:"Lab Assistant",photo:"",avatar:"🧑‍🔬",theme:"sc-t9"},
+  {name:"Mr Gopal",year:"2024 - 2025",designation:"Assistant Professor",photo:"",avatar:"👨‍🏫",theme:"sc-t10"},
+  {name:"Mr Arif Khan",year:"2023 - 2025",designation:"Assistant Professor",photo:"",avatar:"👨‍🏫",theme:"sc-t11"},
+  {name:"Mr Suresh Kumar",year:"2023 - 2024",designation:"Ex HOD",photo:"",avatar:"👨‍🏫",theme:"sc-t12"},
+  {name:"Mrs Vanitha",year:"2023 - 2024",designation:"Assistant Professor",photo:"",avatar:"👩‍🏫",theme:"sc-t13"}
+];
+
+(function renderStaffCards(){
+  const sg=document.getElementById('staffShowcaseGrid');
+  if(!sg) return;
+  STAFF_DATA.forEach((s,i)=>{
+    const card=document.createElement('div');
+    card.className=`sc-card ${s.theme} reveal`;
+    const hasPhoto=/^https?:\/\//i.test((s.photo||'').trim());
+    const imgPart=hasPhoto
+      ?`<img src="${s.photo}" alt="${s.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+         <div class="sc-avatar" style="display:none">${s.avatar}</div>`
+      :`<div class="sc-avatar">${s.avatar}</div>`;
+    card.innerHTML=`
+      <div class="sc-bar"></div>
+      <div class="sc-img-wrap">${imgPart}</div>
+      <div class="sc-info">
+        <div class="sc-name">${s.name}</div>
+        <div class="sc-year">${s.year}</div>
+        <span class="sc-desig">${s.designation}</span>
+      </div>
+      <div class="sc-shine"></div>`;
+    sg.appendChild(card);
+  });
+})();
+
+const grid=document.getElementById('namesGrid');
+function addLabel(t){
+  if(!grid) return;
+  const d=document.createElement('div');
+  d.style.cssText='grid-column:1/-1;padding:6px 0;';
+  d.innerHTML=`<div class="gender-label">${t}</div>`;
+  grid.appendChild(d);
+}
+if(grid){
+  addLabel('👦 &nbsp; BOYS');
+  boys.forEach(n=>{const d=document.createElement('div');d.className='name-card boy reveal';d.textContent=n;grid.appendChild(d);});
+  addLabel('👧 &nbsp; GIRLS');
+  girls.forEach(n=>{const d=document.createElement('div');d.className='name-card girl reveal';d.textContent=n;grid.appendChild(d);});
+  addLabel('👨‍🏫 &nbsp; STAFF');
+  STAFF_DATA.forEach(s=>{const d=document.createElement('div');d.className='name-card boy reveal';d.textContent=s.name;grid.appendChild(d);});
+}
+
+window.toggleProfile=()=>document.getElementById('profileModal').classList.toggle('open');
+document.addEventListener('click',e=>{
+  const m=document.getElementById('profileModal'),b=document.getElementById('profileBtn');
+  if(m&&b&&!m.contains(e.target)&&!b.contains(e.target)) m.classList.remove('open');
+});
+
+window.toggleMenu=()=>document.getElementById('mobileMenu').classList.toggle('open');
+window.closeMenu=()=>document.getElementById('mobileMenu').classList.remove('open');
+
+function showToast(msg,type='success'){
+  let t=document.getElementById('toast');
+  if(!t){
+    t=document.createElement('div');t.id='toast';
+    t.style.cssText='position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a38;border:1px solid #ffd70044;color:#ffd700;padding:12px 28px;border-radius:50px;font-family:Orbitron,monospace;font-size:0.7rem;letter-spacing:2px;opacity:0;transition:all .4s;z-index:9999;white-space:nowrap;';
+    document.body.appendChild(t);
+  }
+  t.textContent=msg;
+  if(type==='error'){t.style.borderColor='#ff444466';t.style.color='#ff8888';}
+  else{t.style.borderColor='#ffd70044';t.style.color='#ffd700';}
+  t.style.opacity='1';t.style.transform='translateX(-50%) translateY(0)';
+  setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(20px)';},3000);
+}
+window.showToast = showToast;
+
+const hc=document.getElementById('hero-canvas');
+if(hc){
+  const hx=hc.getContext('2d');
+  hc.width=hc.offsetWidth; hc.height=hc.offsetHeight;
+  const hstars=Array.from({length:300},()=>({
+    x:Math.random()*hc.width, y:Math.random()*hc.height,
+    r:Math.random()*1.4+0.2, phase:Math.random()*Math.PI*2,
+    spd:Math.random()*0.3+0.1
+  }));
+  let ht=0;
+  (function loop(){
+    hx.clearRect(0,0,hc.width,hc.height); ht+=0.008;
+    hstars.forEach(s=>{
+      const o=0.15+0.6*Math.abs(Math.sin(ht*s.spd+s.phase));
+      hx.beginPath(); hx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      hx.fillStyle=`rgba(255,220,100,${o})`; hx.fill();
+    });
+    requestAnimationFrame(loop);
+  })();
+  window.addEventListener('resize',()=>{hc.width=hc.offsetWidth;hc.height=hc.offsetHeight;});
+}
+
+document.querySelectorAll('.stat-num').forEach(el=>{
+  const target=+el.dataset.target; let cur=0;
+  const step=()=>{cur=Math.min(target,cur+Math.ceil(target/40));el.textContent=cur;if(cur<target)requestAnimationFrame(step);};
+  setTimeout(step,800);
+});
+
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}
+  });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+window.addEventListener('scroll',()=>{
+  const sections=['home','names-section','gallery','videos','memories','feedback','contact'];
+  const scrollY=window.scrollY+100;
+  sections.forEach(id=>{
+    const sec=document.getElementById(id);
+    if(!sec) return;
+    const link=document.querySelector(`.nav-links a[href="#${id}"]`);
+    if(!link) return;
+    if(scrollY>=sec.offsetTop&&scrollY<sec.offsetTop+sec.offsetHeight){
+      link.style.color='var(--gold)'; link.style.borderBottomColor='var(--gold)';
+    } else {link.style.color=''; link.style.borderBottomColor='';}
+  });
+});
+
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    const audio=document.getElementById('bgMusic');
+    if(audio){
+      audio.volume=0.3;
+      const p=audio.play();
+      if(p!==undefined) p.catch(()=>{});
+    }
+  },1000);
+});
+document.addEventListener('click',function initAudio(){
+  const audio=document.getElementById('bgMusic');
+  if(audio&&audio.paused){
+    const p=audio.play();
+    if(p!==undefined) p.catch(()=>{});
+  }
+},{once:true});
+</script>
+
+</body>
+</html>
+

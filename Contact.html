@@ -1,0 +1,736 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - CS-Journey-Legends-2K23-2K26</title>
+<link rel="icon" type="image/jpeg" href="https://res.cloudinary.com/deatzzrsw/image/upload/v1773304356/IMG_20260110_112102_bvebrv.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #ffd700;
+            --gold2: #ff8c00;
+            --teal: #00d4ff;
+            --dark: #04040f;
+            --card: #0d0d24;
+            --text: rgba(255, 255, 255, 0.85);
+            --nav-h: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--dark);
+            color: var(--text);
+            font-family: 'Cormorant Garamond', serif;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--gold), var(--gold2));
+            border-radius: 3px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-h);
+            background: rgba(4, 4, 15, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 clamp(16px, 4vw, 48px);
+            z-index: 1000;
+        }
+
+        .nav-logo {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: clamp(0.8rem, 2vw, 1.1rem);
+            background: linear-gradient(135deg, var(--gold), var(--gold2));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: clamp(12px, 2.5vw, 28px);
+        }
+
+        .nav-links a {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.55);
+            text-decoration: none;
+            transition: all .3s;
+            padding: 6px 2px;
+            border-bottom: 1px solid transparent;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--gold);
+            border-bottom-color: var(--gold);
+        }
+
+        #menuToggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: var(--gold);
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.05rem;
+            transition: all .25s;
+        }
+
+        #menuToggle:hover {
+            border-color: rgba(255, 215, 0, 0.6);
+            background: rgba(255, 215, 0, 0.08);
+        }
+
+        #mobileMenu {
+            display: none;
+            position: fixed;
+            top: var(--nav-h);
+            left: 0;
+            right: 0;
+            background: rgba(4, 4, 15, 0.98);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+            padding: 16px 20px;
+            z-index: 999;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        #mobileMenu a {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+            padding: 14px 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: color .2s;
+        }
+
+        #mobileMenu a:hover, #mobileMenu a.active {
+            color: var(--gold);
+        }
+
+        #mobileMenu.open {
+            display: flex;
+        }
+
+        #profileBtn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd70033, #ff8c0022);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.05rem;
+            transition: all .3s;
+            overflow: hidden;
+        }
+
+        #profileBtn:hover {
+            background: linear-gradient(135deg, #ffd70055, #ff8c0033);
+            transform: scale(1.08);
+        }
+
+        #profileModal {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            width: min(300px, 90vw);
+            background: rgba(8, 8, 30, 0.97);
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            border-radius: 16px;
+            padding: 24px;
+            z-index: 2000;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            transform: translateY(-10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all .3s;
+        }
+
+        #profileModal.open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .profile-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd70033, #ff8c0022);
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 14px;
+            overflow: hidden;
+        }
+
+        #profilePhoto {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .profile-name {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 1rem;
+            text-align: center;
+            color: var(--gold);
+            margin-bottom: 4px;
+        }
+
+        .profile-email {
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 18px;
+            letter-spacing: 1px;
+        }
+
+        .profile-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 9px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.85rem;
+        }
+
+        .profile-row-label {
+            color: rgba(255, 215, 0, 0.6);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+        }
+
+        .profile-row-val {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .btn-logout {
+            width: 100%;
+            margin-top: 16px;
+            padding: 12px;
+            background: rgba(255, 80, 80, 0.12);
+            border: 1px solid rgba(255, 80, 80, 0.25);
+            border-radius: 10px;
+            color: #ff8888;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all .3s;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 80, 80, 0.25);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px clamp(16px, 5vw, 80px);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-badge {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 6px;
+            color: var(--teal);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .section-title {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            background: linear-gradient(135deg, var(--gold), #fff8dc, var(--gold2));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+        }
+
+        .section-divider {
+            width: 100px;
+            height: 3px;
+            margin: 15px auto;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        /* Contact Form */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            background: rgba(13, 13, 36, 0.6);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            border-radius: 20px;
+            padding: clamp(20px, 5vw, 60px);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px 20px;
+            color: #fff;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            border-color: var(--gold);
+            background: rgba(255, 215, 0, 0.05);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+        }
+
+        .form-textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--gold), var(--gold2));
+            border: none;
+            border-radius: 12px;
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 1.1rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.5);
+            filter: brightness(1.1);
+        }
+
+        /* Info Cards */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 60px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            padding: 35px 25px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .info-card:hover {
+            background: rgba(255, 215, 0, 0.05);
+            border-color: rgba(255, 215, 0, 0.3);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+
+        .info-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.2));
+        }
+
+        .info-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            color: var(--gold);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .info-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.6);
+            word-break: break-word;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 20px;
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+            border-top: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .footer-brand {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .footer-credit {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .footer-credit span {
+            color: var(--gold2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            section {
+                padding: 80px 20px;
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+            #menuToggle {
+                display: block;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-logo">CS-Journey-Legends-2K23-2K26</div>
+        <div class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="Gallery.html">Gallery</a>
+            <a href="video.html">Videos</a>
+            <a href="Memories.html">Memories</a>
+            <a href="home.html#feedback">Feedback</a>
+            <a href="Contact.html" class="active">Contact</a>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+            <div id="profileBtn" onclick="toggleProfile()">ðŸ‘¤</div>
+            <button id="menuToggle" onclick="toggleMenu()">â˜°</button>
+        </div>
+    </nav>
+
+    <div id="mobileMenu">
+        <a href="home.html" onclick="closeMenu()">Home</a>
+        <a href="Gallery.html" onclick="closeMenu()">Gallery</a>
+        <a href="video.html" onclick="closeMenu()">Videos</a>
+        <a href="Memories.html" onclick="closeMenu()">Memories</a>
+        <a href="home.html#feedback" onclick="closeMenu()">Feedback</a>
+        <a href="Contact.html" class="active" onclick="closeMenu()">Contact</a>
+    </div>
+
+    <div id="profileModal">
+        <div class="profile-avatar" id="profileAvatar">
+            <img id="profilePhoto" src="" alt="Profile">
+            <span id="profileEmoji">ðŸ‘¤</span>
+        </div>
+        <div class="profile-name" id="pName">Guest</div>
+        <div class="profile-email" id="pEmail">Not logged in</div>
+        <div class="profile-row"><span class="profile-row-label">BATCH</span><span class="profile-row-val">2023 - 2026</span></div>
+        <div class="profile-row"><span class="profile-row-label">DEPT</span><span class="profile-row-val">Computer Science</span></div>
+        <div class="profile-row"><span class="profile-row-label">STATUS</span><span class="profile-row-val" id="pStatus" style="color:#90ee90;">Active</span></div>
+        <button class="btn-logout" onclick="doLogout()">â‡  &nbsp; SIGN OUT</button>
+    </div>
+
+    <section>
+        <div class="section-header animate">
+            <span class="section-badge">âœ¦ CONNECT WITH US âœ¦</span>
+            <h1 class="section-title">GET IN TOUCH</h1>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="contact-container animate" style="animation-delay: 0.2s;">
+            <form id="contactForm">
+                <div class="form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Your Name</label>
+                        <input type="text" id="name" class="form-input" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input type="email" id="email" class="form-input" placeholder="Enter your email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="message">Suggestions or Error Reports</label>
+                    <textarea id="message" class="form-textarea" placeholder="Share your suggestions or report any bugs..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">SEND MESSAGE</button>
+            </form>
+        </div>
+
+        <div class="info-grid animate" style="animation-delay: 0.4s;">
+            <!-- Department Card -->
+            <div class="info-card">
+                <span class="info-icon">ðŸ«</span>
+                <div class="info-title">DEPARTMENT</div>
+                <div class="info-text">Computer Science<br>2023 - 2026 Batch</div>
+            </div>
+
+            <!-- Email Card -->
+            <a href="mailto:ardinfotech03@gmail.com" class="info-card">
+                <span class="info-icon">ðŸ“§</span>
+                <div class="info-title">EMAIL</div>
+                <div class="info-text">ardinfotech03@gmail.com</div>
+            </a>
+
+            <!-- WhatsApp Card -->
+            <a href="https://wa.me/918610852614" target="_blank" class="info-card">
+                <span class="info-icon">ðŸ“±</span>
+                <div class="info-title">WHATSAPP GROUP</div>
+                <div class="info-text">8610852614<br>CS-Journey-Legends-2K23-2K26 Batch</div>
+            </a>
+
+            <!-- Location Card -->
+            <a href="https://www.google.com/maps/search/Muthayammal+Memorial+College+of+Arts+and+Science+Kakkaveri+Rd,+Kakkaveri,+Rasipuram,+Tamil+Nadu+637408" target="_blank" class="info-card">
+                <span class="info-icon">ðŸ“</span>
+                <div class="info-title">LOCATION</div>
+                <div class="info-text">Muthayammal Memorial College<br>Kakkaveri, Rasipuram<br>Tamil Nadu 637408</div>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-brand">CS-Journey-Legends-2K23-2K26 BATCH</div>
+        <div class="footer-credit">
+            68 Students Â· One Family Â· Forever Memories<br><br>
+            Designed by <span>ARD InfoTech</span>
+        </div>
+    </footer>
+
+    <script src="student-profile.js"></script>
+    <script>
+        function toggleProfile() {
+            const modal = document.getElementById('profileModal');
+            if (modal) modal.classList.toggle('open');
+        }
+
+        function toggleMenu() {
+            const m = document.getElementById('mobileMenu');
+            if (m) m.classList.toggle('open');
+        }
+
+        function closeMenu() {
+            const m = document.getElementById('mobileMenu');
+            if (m) m.classList.remove('open');
+        }
+
+        function initProfile() {
+            const email = (localStorage.getItem('loggedEmail') || '').toLowerCase().trim();
+            const name = localStorage.getItem('studentName') || 'Guest';
+            const pName = document.getElementById('pName');
+            const pEmail = document.getElementById('pEmail');
+            const pStatus = document.getElementById('pStatus');
+            const profilePhoto = document.getElementById('profilePhoto');
+            const profileEmoji = document.getElementById('profileEmoji');
+
+            if (email) {
+                if (pName) pName.textContent = name;
+                if (pEmail) pEmail.textContent = email;
+                if (pStatus) {
+                    pStatus.textContent = 'Active';
+                    pStatus.style.color = '#90ee90';
+                }
+
+                if (typeof renderProfileBadge === 'function') {
+                    renderProfileBadge('profileBtn', email, name);
+                }
+
+                const photoUrl = (window.getStudentPhoto ? window.getStudentPhoto(email) : '') || '';
+                if (photoUrl && profilePhoto) {
+                    profilePhoto.src = photoUrl;
+                    profilePhoto.style.display = 'block';
+                    if (profileEmoji) profileEmoji.style.display = 'none';
+                } else {
+                    if (profilePhoto) profilePhoto.style.display = 'none';
+                    if (profileEmoji) profileEmoji.style.display = 'block';
+                }
+            } else {
+                if (pName) pName.textContent = 'Guest';
+                if (pEmail) pEmail.textContent = 'Not logged in';
+                if (pStatus) {
+                    pStatus.textContent = 'Guest Mode';
+                    pStatus.style.color = 'rgba(255,255,255,0.38)';
+                }
+
+                if (profilePhoto) profilePhoto.style.display = 'none';
+                if (profileEmoji) profileEmoji.style.display = 'block';
+                if (typeof renderProfileBadge === 'function') {
+                    renderProfileBadge('profileBtn');
+                }
+            }
+        }
+
+        function doLogout() {
+            localStorage.removeItem('studentName');
+            localStorage.removeItem('loggedEmail');
+            window.location.href = 'login.html';
+        }
+
+        document.addEventListener('click', function(e) {
+            const modal = document.getElementById('profileModal');
+            const btn = document.getElementById('profileBtn');
+            if (!modal || !btn) return;
+            if (!modal.contains(e.target) && !btn.contains(e.target)) {
+                modal.classList.remove('open');
+            }
+
+            const menu = document.getElementById('mobileMenu');
+            const menuBtn = document.getElementById('menuToggle');
+            if (!menu || !menuBtn) return;
+            if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
+                menu.classList.remove('open');
+            }
+        });
+
+        window.addEventListener('load', initProfile);
+
+        const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyBgQImy0sACJSuKV3Qs7iN_S3fE1sRKIKhOQf5NwQnAMTkWH8OIuKJ-1ah9WmnFzzg/exec';
+
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const originalText = btn.innerText;
+            
+            // Simple UI feedback
+            btn.innerText = 'SENDING...';
+            btn.style.opacity = '0.7';
+            btn.disabled = true;
+
+            const formData = new URLSearchParams();
+            formData.append('name', document.getElementById('name').value);
+            formData.append('email', document.getElementById('email').value);
+            formData.append('message', document.getElementById('message').value);
+
+            try {
+                // Using no-cors mode to avoid CORS issues with Apps Script Redirects
+                await fetch(SHEET_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: formData.toString()
+                });
+
+                // Success Feedback
+                btn.innerText = 'MESSAGE SENT! âœ…';
+                btn.style.background = 'linear-gradient(135deg, #00d4ff, #0088cc)';
+                btn.style.boxShadow = '0 5px 20px rgba(0, 212, 255, 0.4)';
+                
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = 'linear-gradient(135deg, #ffd700, #ff8c00)';
+                    btn.style.boxShadow = '0 5px 20px rgba(255, 215, 0, 0.3)';
+                    btn.style.opacity = '1';
+                    btn.disabled = false;
+                    document.getElementById('contactForm').reset();
+                }, 3000);
+
+            } catch (error) {
+                console.error('Submission error:', error);
+                btn.innerText = 'ERROR! âŒ';
+                btn.style.background = 'linear-gradient(135deg, #ff4444, #cc0000)';
+                
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = 'linear-gradient(135deg, #ffd700, #ff8c00)';
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
+
+
