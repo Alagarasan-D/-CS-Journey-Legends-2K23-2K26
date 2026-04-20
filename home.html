@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -993,10 +993,110 @@ function getQuestionsForStudent(email) {
   }
 
   async function gsRead() {
-    // Local-hosted fallback: avoid CORS/JSONP errors when the sheet endpoint
-    // is not publicly readable from the browser. Submitted answers still save
-    // via Apps Script, and the UI shows the local cache/optimistic updates.
+    // Try reading global rows from Apps Script so all accounts see all feedback.
+    const urls = [
+      `${SHEET_URL}?action=read&t=${Date.now()}`,
+      `${SHEET_URL}?action=list&t=${Date.now()}`,
+      `${SHEET_URL}?action=get&t=${Date.now()}`,
+      `${SHEET_URL}?t=${Date.now()}`
+    ];
+
+    for (const url of urls) {
+      try {
+        const res = await fetch(url, {
+          method: 'GET',
+          mode: 'cors',
+          cache: 'no-store'
+        });
+
+        if (!res.ok) continue;
+
+        const contentType = (res.headers.get('content-type') || '').toLowerCase();
+        const payload = contentType.includes('application/json')
+          ? await res.json()
+          : JSON.parse(await res.text());
+
+        const rows = normalizeRows(payload)
+          .map(normalizeRow)
+          .filter(r => (r.student_email || '').trim() && (r.answer || '').trim());
+
+        if (rows.length || Array.isArray(normalizeRows(payload))) {
+          fbCache = rows;
+          return rows;
+        }
+      } catch {
+        // Try next read URL pattern.
+      }
+    }
+
+    // Fallback for Apps Script deployments where browser CORS blocks fetch.
+    const jsonpActions = ['read', 'list', 'get', ''];
+    for (const action of jsonpActions) {
+      try {
+        const rows = await gsReadViaJsonp(action);
+        if (rows.length) {
+          fbCache = rows;
+          return rows;
+        }
+      } catch {
+        // Try next JSONP action.
+      }
+    }
+
+    // Fallback: keep current view stable when remote read is unavailable.
     return fbCache.slice();
+  }
+
+  function gsReadViaJsonp(action) {
+    return new Promise((resolve, reject) => {
+      const cbName = `fbJsonp_${Date.now()}_${Math.floor(Math.random() * 1e6)}`;
+      const script = document.createElement('script');
+      const timeoutMs = 9000;
+      let done = false;
+
+      const cleanup = () => {
+        if (script.parentNode) script.parentNode.removeChild(script);
+        try { delete window[cbName]; } catch { window[cbName] = undefined; }
+      };
+
+      const timer = setTimeout(() => {
+        if (done) return;
+        done = true;
+        cleanup();
+        reject(new Error('JSONP timeout'));
+      }, timeoutMs);
+
+      window[cbName] = (payload) => {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        cleanup();
+        try {
+          const rows = normalizeRows(payload)
+            .map(normalizeRow)
+            .filter(r => (r.student_email || '').trim() && (r.answer || '').trim());
+          resolve(rows);
+        } catch (err) {
+          reject(err);
+        }
+      };
+
+      const query = action
+        ? `${SHEET_URL}?action=${encodeURIComponent(action)}&callback=${encodeURIComponent(cbName)}&t=${Date.now()}`
+        : `${SHEET_URL}?callback=${encodeURIComponent(cbName)}&t=${Date.now()}`;
+
+      script.src = query;
+      script.async = true;
+      script.onerror = () => {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        cleanup();
+        reject(new Error('JSONP script load failed'));
+      };
+
+      document.body.appendChild(script);
+    });
   }
 
   async function updateResponseCount(data) {
