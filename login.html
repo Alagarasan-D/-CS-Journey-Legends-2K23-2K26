@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -480,7 +480,13 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 <script type="module">
   // Import Firebase modules
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    setPersistence,
+    browserLocalPersistence,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
   // Your Firebase configuration
   const firebaseConfig = {
@@ -495,6 +501,18 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+
+  // Keep users signed in across browser restarts unless they explicitly sign out.
+  setPersistence(auth, browserLocalPersistence).catch((error) => {
+    console.warn('Persistence setup failed:', error);
+  });
+
+  // If a valid session already exists, skip login and go straight to welcome page.
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      window.location.href = 'welcome.html';
+    }
+  });
 
   // Email to Name mapping (ALL 68 STUDENTS)
 const studentNames = {
@@ -583,6 +601,9 @@ const studentNames = {
     showToast('⏳ Verifying...', false);
     
     try {
+      // Ensure login session survives browser close/reopen.
+      await setPersistence(auth, browserLocalPersistence);
+
       // Sign in with Firebase
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       
