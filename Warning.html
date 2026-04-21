@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -357,7 +357,40 @@ let p=0, start=Date.now();
 })();
 
 /* ── REDIRECT after 7s ── */
-setTimeout(()=>{ window.location.href='login.html'; }, 7000);
+let warningAuthReady = false;
+let warningSignedIn = false;
+
+function goNextFromWarning() {
+  if (!warningAuthReady) return;
+  window.location.replace(warningSignedIn ? 'welcome.html' : 'login.html');
+}
+
+import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js').then(({ initializeApp, getApps, getApp }) => {
+  const firebaseConfig = {
+    apiKey: "AIzaSyDT_dWHb6OuujWXpYEv-FRV48F9kDqsHFE",
+    authDomain: "email-93402.firebaseapp.com",
+    projectId: "email-93402",
+    storageBucket: "email-93402.firebasestorage.app",
+    messagingSenderId: "306356848557",
+    appId: "1:306356848557:web:4bc7cdfd614aa5542d8324"
+  };
+  const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+  return import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js').then(({ getAuth, onAuthStateChanged }) => {
+    const auth = getAuth(app);
+    onAuthStateChanged(auth, (user) => {
+      warningAuthReady = true;
+      warningSignedIn = !!user;
+      if (warningSignedIn) {
+        window.location.replace('welcome.html');
+        return;
+      }
+      setTimeout(goNextFromWarning, 7000);
+    });
+  });
+}).catch((error) => {
+  console.warn('Auth gate skipped:', error);
+  setTimeout(() => { window.location.replace('login.html'); }, 7000);
+});
 
 /* ── BACKGROUND MUSIC ── */
 const bgMusic = document.getElementById('bgMusic');
