@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -166,6 +166,14 @@
         #profileBtn:hover {
             background: linear-gradient(135deg, #ffd70055, #ff8c0033);
             transform: scale(1.08);
+        }
+
+        .student-profile-badge-photo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
         }
 
         #profileModal {
@@ -628,6 +636,10 @@
                 const photoUrl = (window.getStudentPhoto ? window.getStudentPhoto(email) : '') || '';
                 if (photoUrl && profilePhoto) {
                     profilePhoto.src = photoUrl;
+                    profilePhoto.onerror = function () {
+                        profilePhoto.style.display = 'none';
+                        if (profileEmoji) profileEmoji.style.display = 'block';
+                    };
                     profilePhoto.style.display = 'block';
                     if (profileEmoji) profileEmoji.style.display = 'none';
                 } else {
@@ -650,7 +662,27 @@
             }
         }
 
-        function doLogout() {
+        async function doLogout() {
+            try {
+                const { initializeApp, getApps, getApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+                const { getAuth, signOut } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+                const firebaseConfig = {
+                    apiKey: 'AIzaSyDT_dWHb6OuujWXpYEv-FRV48F9kDqsHFE',
+                    authDomain: 'email-93402.firebaseapp.com',
+                    projectId: 'email-93402',
+                    storageBucket: 'email-93402.firebasestorage.app',
+                    messagingSenderId: '306356848557',
+                    appId: '1:306356848557:web:4bc7cdfd614aa5542d8324'
+                };
+                const appName = 'contact-logout-app';
+                const app = getApps().some((item) => item.name === appName)
+                    ? getApp(appName)
+                    : initializeApp(firebaseConfig, appName);
+                await signOut(getAuth(app));
+            } catch (error) {
+                console.warn('Firebase sign-out skipped:', error);
+            }
+
             localStorage.removeItem('studentName');
             localStorage.removeItem('loggedEmail');
             window.location.href = 'login.html';
