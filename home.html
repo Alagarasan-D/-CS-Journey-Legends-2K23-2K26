@@ -820,56 +820,68 @@ window.doLogout = async () => {
 
 <!-- ── STUDENT QUESTIONS MAPPING ── -->
 <script>
-const QUESTION_POOL = (() => {
+const EXCLUDED_NEW_QUESTION_EMAILS = new Set([
+  'aadheeshwark@gmail.com',
+  'alexjames21857@gmail.com',
+  'sanjai9487771308@gmail.com',
+  'rajasanthi0709@gmail.com',
+  'monikav28072006@gmail.com',
+  'vishnumuthuupm1978@gmail.com',
+  'sowmiyavishnu869@gmail.com',
+  'jamunaselvakumar9080@gmail.com',
+  'manishaa24112005@gmail.com'
+]);
+
+const LEGACY_QUESTION_POOL = (() => {
   const seeds = [
-    "What is your most unforgettable memory from this batch? 💭",
-    "Who is the funniest person in the batch and why? 😂",
-    "If you could relive one day from these 3 years, which day would it be? 📅",
-    "What is one thing you learned from your batchmates that no textbook could teach? 📚",
-    "Which moment made you most proud to be part of CS-Journey-Legends-2K23-2K26? 🏆",
-    "If you could write one sentence about this batch in history, what would it say? ✍️",
-    "Who do you think will be most successful in 10 years and why? 🚀",
-    "What is the one thing you will miss most about this class? 💔",
-    "Describe this batch in exactly 3 words. 🎯",
-    "What advice would you give to your first-year self? 🕐",
-    "Which class event or trip was your absolute favourite? 🌟",
-    "What is something you wish you had done more in these 3 years? 🤔",
-    "Write a short message to the entire batch. 💌",
-    "What song best describes your journey with this batch? 🎵",
-    "How has this batch changed you as a person? ❤️",
-    "Who quietly supported the batch most and how? 🤝",
-    "What classroom moment still makes you smile instantly? 😄",
-    "Which friend pushed you to improve the most? 🔥",
-    "What is one tradition of this batch that should never end? ✨",
-    "If this batch was a movie, what would the title be? 🎬",
-    "Which day felt most emotional in your college life? 🫶",
-    "What did this batch teach you about teamwork? 🧠",
-    "What message would you leave for juniors from our batch? 📢",
-    "Which teacher's advice stayed with you the longest? 📌",
-    "What unexpected friendship changed your life here? 🌈",
-    "What memory should every class preserve forever? 📸",
-    "Which batch challenge made us stronger together? 💪",
-    "What is your proudest personal achievement in these years? 🥇",
-    "What small moment became a big memory for you? 🕯️",
-    "What one promise should our batch keep after graduation? 🤍",
-    "Which conversation in class changed your thinking? 💡",
-    "What will you thank this batch for, forever? 🙏",
-    "What was your happiest attendance day and why? 📘",
-    "Which lab or project day was unforgettable? 💻",
-    "What does friendship mean after these three years? 🌻"
+    'What is your most unforgettable memory from this batch?',
+    'Who is the funniest person in the batch and why?',
+    'If you could relive one day from these 3 years, which day would it be?',
+    'What is one thing you learned from your batchmates that no textbook could teach?',
+    'Which moment made you most proud to be part of CS-Journey-Legends-2K23-2K26?',
+    'If you could write one sentence about this batch in history, what would it say?',
+    'Who do you think will be most successful in 10 years and why?',
+    'What is the one thing you will miss most about this class?',
+    'Describe this batch in exactly 3 words.',
+    'What advice would you give to your first-year self?',
+    'Which class event or trip was your absolute favourite?',
+    'What is something you wish you had done more in these 3 years?',
+    'Write a short message to the entire batch.',
+    'What song best describes your journey with this batch?',
+    'How has this batch changed you as a person?',
+    'Who quietly supported the batch most and how?',
+    'What classroom moment still makes you smile instantly?',
+    'Which friend pushed you to improve the most?',
+    'What is one tradition of this batch that should never end?',
+    'If this batch was a movie, what would the title be?',
+    'Which day felt most emotional in your college life?',
+    'What did this batch teach you about teamwork?',
+    'What message would you leave for juniors from our batch?',
+    'Which teacher\'s advice stayed with you the longest?',
+    'What unexpected friendship changed your life here?',
+    'What memory should every class preserve forever?',
+    'Which batch challenge made us stronger together?',
+    'What is your proudest personal achievement in these years?',
+    'What small moment became a big memory for you?',
+    'What one promise should our batch keep after graduation?',
+    'Which conversation in class changed your thinking?',
+    'What will you thank this batch for, forever?',
+    'What was your happiest attendance day and why?',
+    'Which lab or project day was unforgettable?',
+    'What does friendship mean after these three years?'
   ];
 
   const tones = [
-    "Answer in one line.",
-    "Share honestly.",
-    "Add a specific name or moment.",
-    "Write from the heart.",
-    "Keep it meaningful.",
-    "Give one practical example.",
-    "Use simple words.",
-    "Be creative.",
-    "Keep it short and clear.",
-    "Include one emotion."
+    'Answer in one line.',
+    'Share honestly.',
+    'Add a specific name or moment.',
+    'Write from the heart.',
+    'Keep it meaningful.',
+    'Give one practical example.',
+    'Use simple words.',
+    'Be creative.',
+    'Keep it short and clear.',
+    'Include one emotion.'
   ];
 
   const pool = [];
@@ -881,48 +893,150 @@ const QUESTION_POOL = (() => {
   return pool;
 })();
 
-function getQuestionsForStudent(email) {
-  const monikaEmail = 'monikav28072006@gmail.com';
-  const normalizedEmail = (email || '').toLowerCase().trim();
-  if (normalizedEmail === monikaEmail) {
-    return [
-      'What was your first impression of our class on the first day?',
-      'What makes our batch special compared to other departments?',
-      'How would you describe the energy and vibe of our classroom?',
-      'What is the best quality of the boys in our class?',
-      'What is the best quality of the girls in our class?',
-      'How did our class support each other during exams, projects, or events?',
-      'What is one funny or chaotic moment everyone in our class remembers?',
-      'What is one moment that made you feel proud of our batch?',
-      'What role do you think friendship played in our college life?',
-      'If someone asks about our class, what one sentence would you say about us?',
-      'What three words best describe our batch?',
-      'What is something unique about our class culture or habits?',
-      'Which event or day best represents our batch spirit?',
-      'What will you miss the most about our class after college?',
-      'Write one short message to the CS-Journey-Legends-2K23-2K26 batch.',
-      'How would you describe our batch in one or two sentences?',
-      'Write one line message for our batch that will stay forever?'
-    ];
+const QUESTION_POOL = (() => {
+  const sourceQuestions = [
+    'What is the one thing you never told anyone in this batch but wish you had?',
+    'Who in this batch changed your life without even realizing it?',
+    'What is the most emotional moment you shared with a professor here?',
+    'Which night on campus will you remember on your deathbed?',
+    'Who is the person you secretly admire but never had the courage to tell?',
+    'What is the biggest mistake you made in these three years and what did it teach you?',
+    'Which friend\'s laughter is permanently etched into your memory?',
+    'What was the most painful goodbye you already experienced during college?',
+    'Who in this batch made you feel less alone during your darkest week?',
+    'What is the one thing you will cry about when you leave this gate for the last time?',
+    'Which professor\'s words still echo in your head when you\'re struggling?',
+    'What is the most selfless thing a batchmate did for you without asking for anything in return?',
+    'Who is the person you wish you had spent more time with?',
+    'What was the most difficult truth a friend told you that you needed to hear?',
+    'Which spot on campus holds your most private tears?',
+    'Who in this batch will you never forget, even if you lose touch?',
+    'What is the one thing you regret not doing for a friend here?',
+    'Which moment made you realize that this batch is actually a family?',
+    'Who is the person who defended you when you weren\'t in the room?',
+    'What is the most meaningful apology you received in college?',
+    'Which staff member\'s disappointment in you still hurts when you think about it?',
+    'What is the one thing you learned about love from being in this batch?',
+    'Who saw you break down and didn\'t ask questions, just sat with you?',
+    'What is the most beautiful thing someone in this batch said about you behind your back?',
+    'Which failure here will eventually become your greatest success story?',
+    'Who is the friend who made you believe that you matter?',
+    'What is the one memory from this college that feels like a movie scene?',
+    'Which professor do you think actually cried after a student\'s farewell?',
+    'What is the most difficult forgiveness you had to offer someone here?',
+    'Who in this batch changed your definition of friendship forever?',
+    'What is the one thing you will miss about the chaos of our classroom?',
+    'Which friend\'s success feels like your own personal victory?',
+    'What was the most emotional moment during any college function?',
+    'Who is the person you trust with your ugliest secrets?',
+    'What is the one thing you wish you could tell your first-year self?',
+    'Which staff member\'s kindness saved you from quitting?',
+    'What is the most unexpected friendship that became your strongest?',
+    'Who made you feel like you belonged when you felt like an outsider?',
+    'What is the one thing you learned about grief while being in this batch?',
+    'Which conversation in the corridor changed your entire perspective?',
+    'Who is the person you will miss arguing with the most?',
+    'What was the most vulnerable thing you shared during a late-night talk?',
+    'Which professor\'s teaching went beyond syllabus and into life?',
+    'What is the one thing you will never forgive yourself for from these three years?',
+    'Who in this batch has the kindest heart hidden behind a tough exterior?',
+    'What is the most painful realization you had about adulthood here?',
+    'Which friend\'s presence feels like coming home?',
+    'What was the most meaningful silence you shared with someone?',
+    'Who is the person who stayed when everyone else walked away?',
+    'What is the one thing you want to be remembered for by this batch?',
+    'Which staff member\'s faith in you changed your career path?',
+    'What is the most emotional thank you you never said?',
+    'Who in this batch saw your potential before you saw it yourself?',
+    'What was the hardest day of college and who got you through it?',
+    'Which memory from the library will stay with you forever?',
+    'Who is the friend who knows your family\'s struggles without you explaining?',
+    'What is the one thing you will miss about the morning commutes with batchmates?',
+    'Which professor\'s scolding actually came from a place of love?',
+    'What is the most beautiful lie you told yourself to survive here?',
+    'Who in this batch made you laugh so hard you forgot your sadness?',
+    'What is the one thing you learned about letting go from this college?',
+    'Which friend\'s loyalty surprised you the most?',
+    'What was the most emotional moment during a group project?',
+    'Who is the person you want to hug one last time before leaving?',
+    'What is the one thing you will never tell your parents about college life?',
+    'Which staff member\'s life story inspired you to keep going?',
+    'What is the most difficult goodbye you are not ready to say?',
+    'Who in this batch taught you what real friendship looks like?',
+    'What was the most unexpected act of kindness you received here?',
+    'Which moment made you realize that time is actually running out?',
+    'Who is the person whose absence will make the campus feel empty?',
+    'What is the one thing you learned about yourself from a failed relationship here?',
+    'Which professor\'s advice do you still carry in your wallet or phone?',
+    'What is the most emotional memory from your first year?',
+    'Who in this batch made you feel proud to be part of this group?',
+    'What was the hardest truth you had to accept about a friend?',
+    'Which spot on campus witnessed your biggest victory celebration?',
+    'Who is the friend who never judged you, no matter what?',
+    'What is the one thing you will miss about the college canteen chaos?',
+    'Which staff member\'s farewell speech made the whole batch emotional?',
+    'What is the most important thing you learned from a friend\'s mistake?',
+    'Who in this batch made you feel beautiful or handsome when you felt ugly?',
+    'What was the most painful thing someone said to you here?',
+    'Which memory from a college trip will never fade?',
+    'Who is the person you would choose to be stuck with during an emergency?',
+    'What is the one thing you regret not saying to a professor?',
+    'Which friend\'s hug felt like therapy?',
+    'What was the most emotional moment during an internal exam?',
+    'Who in this batch taught you that it\'s okay to not be okay?',
+    'What is the one thing you learned about patience from this college?',
+    'Which staff member\'s smile could fix your worst day?',
+    'What is the most difficult thing you had to explain to your parents about college?',
+    'Who is the friend who made you feel like your problems mattered?',
+    'What was the most beautiful sunset you watched on campus?',
+    'Which moment made you realize that these three years were actually a gift?',
+    'Who in this batch will you call first when something amazing happens in your life?',
+    'What is the one thing you learned about betrayal from being here?',
+    'Which professor\'s class did you actually look forward to?',
+    'What is the most emotional goodbye you have already experienced?',
+    'Who is the person you want to thank publicly but never got the chance?',
+    'What is the one thing you will miss about the noise of the college corridors?',
+    'Which friend\'s strength during a crisis inspired you deeply?',
+    'What was the most vulnerable you ever felt in front of the whole batch?',
+    'Who in this batch knows the real reason behind your smile?',
+    'What is the one thing you learned about survival from these three years?',
+    'What is the one question you wish someone had asked you about these three years, and what is your answer to it?'
+  ];
+
+  const pool = [];
+  for (let i = 0; i < 640; i++) {
+    pool.push(`${i + 1}. ${sourceQuestions[i % sourceQuestions.length]}`);
   }
+  return pool;
+})();
 
+function takeQuestionSlice(pool, email, qCount) {
+  const safeEmail = (email || '').toLowerCase().trim();
   const emails = (window.STUDENT_EMAIL_ORDER || []).slice();
-  const qCount = 10;
-  if (!emails.length) return QUESTION_POOL.slice(0, qCount);
+  if (!emails.length) return pool.slice(0, qCount);
 
-  let idx = emails.indexOf(email);
+  let idx = emails.indexOf(safeEmail);
   if (idx === -1) {
     let h = 0;
-    for (let i = 0; i < email.length; i++) h = ((h << 5) - h + email.charCodeAt(i)) | 0;
-    idx = Math.abs(h) % Math.max(1, Math.floor(QUESTION_POOL.length / qCount));
+    for (let i = 0; i < safeEmail.length; i++) h = ((h << 5) - h + safeEmail.charCodeAt(i)) | 0;
+    idx = Math.abs(h) % Math.max(1, Math.floor(pool.length / qCount));
   }
 
   const start = idx * qCount;
   const end = start + qCount;
-  if (end <= QUESTION_POOL.length) return QUESTION_POOL.slice(start, end);
+  if (end <= pool.length) return pool.slice(start, end);
 
-  const safeStart = Math.max(0, QUESTION_POOL.length - qCount);
-  return QUESTION_POOL.slice(safeStart, safeStart + qCount);
+  const safeStart = Math.max(0, pool.length - qCount);
+  return pool.slice(safeStart, safeStart + qCount);
+}
+
+function getQuestionsForStudent(email) {
+  const normalizedEmail = (email || '').toLowerCase().trim();
+  const qCount = 10;
+  if (EXCLUDED_NEW_QUESTION_EMAILS.has(normalizedEmail)) {
+    return takeQuestionSlice(LEGACY_QUESTION_POOL, normalizedEmail, qCount);
+  }
+  return takeQuestionSlice(QUESTION_POOL, normalizedEmail, qCount);
 }
 </script>
 
